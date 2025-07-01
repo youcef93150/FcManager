@@ -1,0 +1,162 @@
+# ========================================
+# ROUTES API PSG - Configuration propre
+# ========================================
+
+# Routes d'authentification
+auth_login:
+    path: /api/login
+    controller: App\Controller\LoginController::login
+    methods: [POST, OPTIONS]
+
+auth_check:
+    path: /api/check-auth
+    controller: App\Controller\AuthController::checkAuth
+    methods: [GET, OPTIONS]
+
+# ========================================
+# Routes Dashboard
+# ========================================
+dashboard_stats:
+    path: /api/dashboard/stats
+    controller: App\Controller\DashboardController::getDashboardStats
+    methods: [GET, OPTIONS]
+
+dashboard_joueurs_stats:
+    path: /api/dashboard/joueurs-stats
+    controller: App\Controller\DashboardController::getJoueursStats
+    methods: [GET, OPTIONS]
+
+dashboard_boutique_stats:
+    path: /api/dashboard/boutique-stats
+    controller: App\Controller\DashboardController::getBoutiqueStats
+    methods: [GET, OPTIONS]
+
+# ========================================
+# Routes Joueurs
+# ========================================
+joueurs_list:
+    path: /api/joueurs
+    controller: App\Controller\JoueurController::getJoueurs
+    methods: [GET, OPTIONS]
+
+joueurs_create:
+    path: /api/joueurs
+    controller: App\Controller\JoueurController::addJoueur
+    methods: [POST, OPTIONS]
+
+joueurs_update:
+    path: /api/joueurs/{id}
+    controller: App\Controller\JoueurController::updateJoueur
+    methods: [PUT, OPTIONS]
+
+joueurs_delete:
+    path: /api/joueurs/{id}
+    controller: App\Controller\JoueurController::deleteJoueur
+    methods: [DELETE, OPTIONS]
+
+# ========================================
+# Routes Produits/Boutique
+# ========================================
+produits_list:
+    path: /api/produits
+    controller: App\Controller\BoutiqueAdminController::getProducts
+    methods: [GET, OPTIONS]
+
+produits_create:
+    path: /api/produits
+    controller: App\Controller\BoutiqueAdminController::addProduct
+    methods: [POST, OPTIONS]
+
+produits_delete:
+    path: /api/produits/{id}
+    controller: App\Controller\BoutiqueAdminController::deleteProduct
+    methods: [DELETE, OPTIONS]
+
+produits_update_stock:
+    path: /api/produits/{id}/stock
+    controller: App\Controller\BoutiqueAdminController::updateStock
+    methods: [PUT, OPTIONS]
+
+# ========================================
+# Routes Actualités
+# ========================================
+actualites_list:
+    path: /api/actualites
+    controller: App\Controller\ActualitesController::getActualites
+    methods: [GET, OPTIONS]
+
+actualites_create:
+    path: /api/actualites
+    controller: App\Controller\ActualitesController::addActualite
+    methods: [POST, OPTIONS]
+
+actualites_update:
+    path: /api/actualites/{id}
+    controller: App\Controller\ActualitesController::updateActualite
+    methods: [PUT, OPTIONS]
+
+actualites_delete:
+    path: /api/actualites/{id}
+    controller: App\Controller\ActualitesController::deleteActualite
+    methods: [DELETE, OPTIONS]
+
+# ========================================
+# Routes Matchs
+# ========================================
+matchs_list:
+    path: /api/matchs
+    controller: App\Controller\MatchsController::getMatchs
+    methods: [GET, OPTIONS]
+
+matchs_create:
+    path: /api/matchs
+    controller: App\Controller\MatchsController::addMatch
+    methods: [POST, OPTIONS]
+
+matchs_update:
+    path: /api/matchs/{id}
+    controller: App\Controller\MatchsController::updateMatch
+    methods: [PUT, OPTIONS]
+
+matchs_delete:
+    path: /api/matchs/{id}
+    controller: App\Controller\MatchsController::deleteMatch
+    methods: [DELETE, OPTIONS]
+
+matchs_stats:
+    path: /api/matchs/stats
+    controller: App\Controller\MatchsController::getMatchsStats
+    methods: [GET, OPTIONS]
+
+# ========================================
+# Routes Entraînements
+# ========================================
+entrainements_list:
+    path: /api/entrainements
+    controller: App\Controller\EntrainementsController::getEntrainements
+    methods: [GET, OPTIONS]
+
+entrainements_create:
+    path: /api/entrainements
+    controller: App\Controller\EntrainementsController::addEntrainement
+    methods: [POST, OPTIONS]
+
+entrainements_update:
+    path: /api/entrainements/{id}
+    controller: App\Controller\EntrainementsController::updateEntrainement
+    methods: [PUT, OPTIONS]
+
+entrainements_delete:
+    path: /api/entrainements/{id}
+    controller: App\Controller\EntrainementsController::deleteEntrainement
+    methods: [DELETE, OPTIONS]
+
+entrainements_assign:
+    path: /api/entrainements/assigner
+    controller: App\Controller\EntrainementsController::assignerJoueurEntrainement
+    methods: [POST, OPTIONS]
+
+entrainements_remove:
+    path: /api/entrainements/retirer
+    controller: App\Controller\EntrainementsController::retirerJoueurEntrainement
+    methods: [POST, OPTIONS]

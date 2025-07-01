@@ -1,0 +1,115 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* GENERAL CONTAINERS */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+/* BUTTONS */
+button, .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* TAGS, BADGES */
+.badge, .channel-tag {
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  margin-right: 5px;
+}
+
+/* UTILITIES */
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* ICONS */
+.comment-icon, .actions {
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.comment-icon:hover, .actions:hover {
+  transform: scale(1.1);
+}
+
+/* PAGE SPECIFIC */
+.boutique-admin, .broadcast-item, .classement {
+  padding: 10px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
