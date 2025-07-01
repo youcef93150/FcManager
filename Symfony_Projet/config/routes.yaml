@@ -1,6 +1,3 @@
-# ========================================
-# ROUTES API PSG - Configuration propre
-# ========================================
 
 # Routes d'authentification
 auth_login:
@@ -110,7 +107,7 @@ matchs_list:
 
 matchs_create:
     path: /api/matchs
-    controller: App\Controller\MatchsController::addMatch
+    controller: App\Controller\MatchsController::createMatch
     methods: [POST, OPTIONS]
 
 matchs_update:
@@ -133,30 +130,30 @@ matchs_stats:
 # ========================================
 entrainements_list:
     path: /api/entrainements
-    controller: App\Controller\EntrainementsController::getEntrainements
+    controller: App\Controller\EntrainementController::getEntrainements
     methods: [GET, OPTIONS]
 
 entrainements_create:
     path: /api/entrainements
-    controller: App\Controller\EntrainementsController::addEntrainement
+    controller: App\Controller\EntrainementController::createEntrainement
     methods: [POST, OPTIONS]
 
 entrainements_update:
     path: /api/entrainements/{id}
-    controller: App\Controller\EntrainementsController::updateEntrainement
+    controller: App\Controller\EntrainementController::updateEntrainement
     methods: [PUT, OPTIONS]
 
 entrainements_delete:
     path: /api/entrainements/{id}
-    controller: App\Controller\EntrainementsController::deleteEntrainement
+    controller: App\Controller\EntrainementController::deleteEntrainement
     methods: [DELETE, OPTIONS]
 
 entrainements_assign:
     path: /api/entrainements/assigner
-    controller: App\Controller\EntrainementsController::assignerJoueurEntrainement
+    controller: App\Controller\EntrainementController::assignerJoueurEntrainement
     methods: [POST, OPTIONS]
 
 entrainements_remove:
     path: /api/entrainements/retirer
-    controller: App\Controller\EntrainementsController::retirerJoueurEntrainement
+    controller: App\Controller\EntrainementController::retirerJoueurEntrainement
     methods: [POST, OPTIONS]

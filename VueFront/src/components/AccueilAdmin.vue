@@ -572,34 +572,62 @@ export default {
       }
     },
 
-    // ===== GESTION DES MATCHS =====
     async saveMatch() {
-      if (!this.matchForm.equipe_adverse || !this.matchForm.date_match || 
-          !this.matchForm.competition || !this.matchForm.lieu || !this.matchForm.stade) {
-        alert('Remplissez tous les champs obligatoires');
-        return;
-      }
+  if (!this.matchForm.equipe_adverse || !this.matchForm.date_match || 
+      !this.matchForm.competition || !this.matchForm.lieu || !this.matchForm.stade) {
+    alert('Remplissez tous les champs obligatoires');
+    return;
+  }
 
-      this.isSubmitting = true;
-      try {
-        if (this.editingMatch) {
-          await axios.put(`http://localhost:8000/api/matchs/${this.editingMatch.id}`, this.matchForm);
-          this.showSuccess('Match modifié avec succès');
-        } else {
-          await axios.post('http://localhost:8000/api/matchs', this.matchForm);
-          this.showSuccess('Match créé avec succès');
-        }
-        
-        await this.loadMatches();
-        await this.loadMatchStats();
-        this.cancelMatchForm();
-      } catch (error) {
-        console.error('Erreur sauvegarde match:', error);
-        this.showError('Erreur lors de la sauvegarde');
-      } finally {
-        this.isSubmitting = false;
-      }
-    },
+  // Transformer les données du formulaire pour correspondre à l'API
+  const matchData = {
+    date_match: this.matchForm.date_match,
+    competition: this.matchForm.competition,
+    stade: this.matchForm.stade,
+    statut: this.matchForm.statut
+  };
+
+  // Déterminer equipe_domicile et equipe_exterieur en fonction du lieu
+  if (this.matchForm.lieu === 'Domicile') {
+    matchData.equipe_domicile = 'PSG';
+    matchData.equipe_exterieur = this.matchForm.equipe_adverse;
+    if (this.matchForm.score_psg !== null) {
+      matchData.score_domicile = this.matchForm.score_psg;
+    }
+    if (this.matchForm.score_adverse !== null) {
+      matchData.score_exterieur = this.matchForm.score_adverse;
+    }
+  } else {
+    matchData.equipe_domicile = this.matchForm.equipe_adverse;
+    matchData.equipe_exterieur = 'PSG';
+    if (this.matchForm.score_psg !== null) {
+      matchData.score_exterieur = this.matchForm.score_psg;
+    }
+    if (this.matchForm.score_adverse !== null) {
+      matchData.score_domicile = this.matchForm.score_adverse;
+    }
+  }
+
+  this.isSubmitting = true;
+  try {
+    if (this.editingMatch) {
+      await axios.put(`http://localhost:8000/api/matchs/${this.editingMatch.id}`, matchData);
+      this.showSuccess('Match modifié avec succès');
+    } else {
+      await axios.post('http://localhost:8000/api/matchs', matchData);
+      this.showSuccess('Match créé avec succès');
+    }
+    
+    await this.loadMatches();
+    await this.loadMatchStats();
+    this.cancelMatchForm();
+  } catch (error) {
+    console.error('Erreur sauvegarde match:', error);
+    this.showError('Erreur lors de la sauvegarde');
+  } finally {
+    this.isSubmitting = false;
+  }
+},
 
     async deleteMatch(id) {
       if (!confirm('Supprimer ce match ?')) return;

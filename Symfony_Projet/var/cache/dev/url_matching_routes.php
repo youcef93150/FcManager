@@ -27,11 +27,11 @@ return [
         ],
         '/api/matchs' => [
             [['_route' => 'matchs_list', '_controller' => 'App\\Controller\\MatchsController::getMatchs'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null],
-            [['_route' => 'matchs_create', '_controller' => 'App\\Controller\\MatchsController::addMatch'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null],
+            [['_route' => 'matchs_create', '_controller' => 'App\\Controller\\MatchsController::createMatch'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null],
         ],
         '/api/entrainements' => [
-            [['_route' => 'entrainements_list', '_controller' => 'App\\Controller\\EntrainementsController::getEntrainements'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null],
-            [['_route' => 'entrainements_create', '_controller' => 'App\\Controller\\EntrainementsController::addEntrainement'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null],
+            [['_route' => 'entrainements_list', '_controller' => 'App\\Controller\\EntrainementController::getEntrainements'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null],
+            [['_route' => 'entrainements_create', '_controller' => 'App\\Controller\\EntrainementController::createEntrainement'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null],
         ],
     ],
     [ // $regexpList
@@ -105,11 +105,11 @@ return [
         ],
         387 => [[['_route' => 'matchs_stats', '_controller' => 'App\\Controller\\MatchsController::getMatchsStats'], [], ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
         424 => [
-            [['_route' => 'entrainements_update', '_controller' => 'App\\Controller\\EntrainementsController::updateEntrainement'], ['id'], ['PUT' => 0, 'OPTIONS' => 1], null, false, true, null],
-            [['_route' => 'entrainements_delete', '_controller' => 'App\\Controller\\EntrainementsController::deleteEntrainement'], ['id'], ['DELETE' => 0, 'OPTIONS' => 1], null, false, true, null],
+            [['_route' => 'entrainements_update', '_controller' => 'App\\Controller\\EntrainementController::updateEntrainement'], ['id'], ['PUT' => 0, 'OPTIONS' => 1], null, false, true, null],
+            [['_route' => 'entrainements_delete', '_controller' => 'App\\Controller\\EntrainementController::deleteEntrainement'], ['id'], ['DELETE' => 0, 'OPTIONS' => 1], null, false, true, null],
         ],
-        441 => [[['_route' => 'entrainements_assign', '_controller' => 'App\\Controller\\EntrainementsController::assignerJoueurEntrainement'], [], ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
-        456 => [[['_route' => 'entrainements_remove', '_controller' => 'App\\Controller\\EntrainementsController::retirerJoueurEntrainement'], [], ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
+        441 => [[['_route' => 'entrainements_assign', '_controller' => 'App\\Controller\\EntrainementController::assignerJoueurEntrainement'], [], ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
+        456 => [[['_route' => 'entrainements_remove', '_controller' => 'App\\Controller\\EntrainementController::retirerJoueurEntrainement'], [], ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
         495 => [
             [['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],

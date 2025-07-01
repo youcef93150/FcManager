@@ -34,7 +34,8 @@ class Matchs
     #[ORM\Column(name: "score_exterieur", type: "integer", nullable: true)]
     private $scoreExterieur;
 
-    #[ORM\Column(name: "statut", type: "string", length: 20)]
+    // ✅ CORRECTION : Changé de "string" vers "text" pour correspondre à votre BDD
+    #[ORM\Column(name: "statut", type: "text", nullable: false)]
     private $statut = 'programme';
 
     #[ORM\Column(name: "created_at", type: "datetime")]
@@ -134,8 +135,13 @@ class Matchs
         return $this->statut;
     }
 
+    // ✅ AMÉLIORATION : Validation des statuts acceptés
     public function setStatut(string $statut): self
     {
+        $statutsValides = ['programme', 'en_cours', 'termine', 'reporte'];
+        if (!in_array($statut, $statutsValides)) {
+            throw new \InvalidArgumentException("Statut invalide. Valeurs acceptées : " . implode(', ', $statutsValides));
+        }
         $this->statut = $statut;
         return $this;
     }
