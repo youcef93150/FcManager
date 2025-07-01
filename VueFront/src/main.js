@@ -1,7 +1,6 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './Router'; // Import du routeur
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './Router.js'
+import './utils/auth' // Importer la configuration axios
 
-
-// Création et montage de l'application Vue
-createApp(App).use(router).mount('#app');
+createApp(App).use(router).mount('#app')

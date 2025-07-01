@@ -415,9 +415,26 @@ export default {
       ]
     }
   },
+  async mounted() {
+    // Vérifier l'authentification
+    if (!localStorage.getItem('authToken')) {
+      this.$router.push('/login');
+      return;
+    }
+
+    // Vérifier le rôle utilisateur
+    const userRole = localStorage.getItem('userRole');
+    if (userRole === 'admin') {
+      this.$router.push('/AccueilAdmin');
+      return;
+    }
+  },
   methods: {
     logout() {
+      // Nettoyer toutes les données d'authentification
       localStorage.removeItem("authToken");
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userId");
       this.$router.push("/login");
     },
     toggleNotifications() {

@@ -59,6 +59,13 @@ export default {
 
         console.log("Réponse API :", response.data);
 
+        // Stocker le token JWT et les infos utilisateur
+        if (response.data.token) {
+          localStorage.setItem('authToken', response.data.token);
+          localStorage.setItem('userRole', response.data.user.role);
+          localStorage.setItem('userId', response.data.user.id);
+        }
+
         // Vérification du rôle et redirection
         const userRole = response.data.user.role;
 
@@ -81,6 +88,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 h1 {
   text-align: center;
