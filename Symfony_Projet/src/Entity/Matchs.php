@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: "matchs")]
@@ -14,47 +13,40 @@ class Matchs
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 100)]
-    #[Assert\NotBlank]
-    private $equipe_domicile;
+    #[ORM\Column(name: "equipe_domicile", type: "string", length: 100)]
+    private $equipeDomicile;
 
-    #[ORM\Column(type: "string", length: 100)]
-    #[Assert\NotBlank]
-    private $equipe_exterieur;
+    #[ORM\Column(name: "equipe_exterieur", type: "string", length: 100)]
+    private $equipeExterieur;
 
     #[ORM\Column(name: "date_match", type: "datetime")]
-    #[Assert\NotNull]
     private $dateMatch;
 
-    #[ORM\Column(type: "string", length: 100)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name: "competition", type: "string", length: 100)]
     private $competition;
 
-    #[ORM\Column(type: "string", length: 150)]
-    #[Assert\NotBlank]
+    #[ORM\Column(name: "stade", type: "string", length: 150)]
     private $stade;
 
     #[ORM\Column(name: "score_domicile", type: "integer", nullable: true)]
-    private $scoreDomicile = null;
+    private $scoreDomicile;
 
     #[ORM\Column(name: "score_exterieur", type: "integer", nullable: true)]
-    private $scoreExterieur = null;
+    private $scoreExterieur;
 
-    #[ORM\Column(type: "string", length: 20)]
+    #[ORM\Column(name: "statut", type: "string", length: 20)]
     private $statut = 'programme';
 
     #[ORM\Column(name: "created_at", type: "datetime")]
     private $createdAt;
 
-    #[ORM\Column(name: "updated_at", type: "datetime", nullable: true)]
-    private $updatedAt;
-
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
+        $this->statut = 'programme';
     }
 
+    // Getters et Setters de base
     public function getId(): ?int
     {
         return $this->id;
@@ -62,23 +54,23 @@ class Matchs
 
     public function getEquipeDomicile(): ?string
     {
-        return $this->equipe_domicile;
+        return $this->equipeDomicile;
     }
 
-    public function setEquipeDomicile(string $equipe_domicile): self
+    public function setEquipeDomicile(string $equipeDomicile): self
     {
-        $this->equipe_domicile = $equipe_domicile;
+        $this->equipeDomicile = $equipeDomicile;
         return $this;
     }
 
-    public function getEquipeExterieure(): ?string
+    public function getEquipeExterieur(): ?string
     {
-        return $this->equipe_exterieur;
+        return $this->equipeExterieur;
     }
 
-    public function setEquipeExterieure(string $equipe_exterieur): self
+    public function setEquipeExterieur(string $equipeExterieur): self
     {
-        $this->equipe_exterieur = $equipe_exterieur;
+        $this->equipeExterieur = $equipeExterieur;
         return $this;
     }
 
@@ -123,19 +115,17 @@ class Matchs
     public function setScoreDomicile(?int $scoreDomicile): self
     {
         $this->scoreDomicile = $scoreDomicile;
-        $this->updateStatut();
         return $this;
     }
 
-    public function getScoreExterieure(): ?int
+    public function getScoreExterieur(): ?int
     {
         return $this->scoreExterieur;
     }
 
-    public function setScoreExterieure(?int $scoreExterieur): self
+    public function setScoreExterieur(?int $scoreExterieur): self
     {
         $this->scoreExterieur = $scoreExterieur;
-        $this->updateStatut();
         return $this;
     }
 
@@ -161,130 +151,44 @@ class Matchs
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTime $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    // ===== MÉTHODES ADDITIONNELLES POUR LA COMPATIBILITÉ =====
-
-    public function getEquipeAdverse(): ?string
-    {
-        return $this->isPsgDomicile() ? $this->equipe_exterieur : $this->equipe_domicile;
-    }
-
-    public function setEquipeAdverse(string $equipe_adverse): self
-    {
-        if ($this->isPsgDomicile()) {
-            $this->equipe_exterieur = $equipe_adverse;
-        } else {
-            $this->equipe_domicile = $equipe_adverse;
+    // Méthodes calculées pour la compatibilité Vue.js
+    public function getLieu(): ?string 
+    { 
+        if ($this->equipeDomicile === 'PSG') {
+            return 'Domicile';
+        } else if ($this->equipeExterieur === 'PSG') {
+            return 'Extérieur';
         }
-        return $this;
+        return 'Neutre';
     }
 
-    public function getLieu(): ?string
-    {
-        return $this->isPsgDomicile() ? 'Domicile' : 'Extérieur';
-    }
-
-    public function setLieu(string $lieu): self
-    {
-        $is_psg_domicile = ($lieu === 'Domicile');
-        
-        // Si le lieu change et que l'équipe adverse est définie, mise à jour des équipes
-        if ($is_psg_domicile !== $this->isPsgDomicile()) {
-            $equipe_adverse = $this->getEquipeAdverse();
-            
-            if ($is_psg_domicile) {
-                $this->equipe_domicile = 'PSG';
-                $this->equipe_exterieur = $equipe_adverse;
-            } else {
-                $this->equipe_domicile = $equipe_adverse;
-                $this->equipe_exterieur = 'PSG';
-            }
+    public function getEquipeAdverse(): ?string 
+    { 
+        if ($this->equipeDomicile === 'PSG') {
+            return $this->equipeExterieur;
+        } else if ($this->equipeExterieur === 'PSG') {
+            return $this->equipeDomicile;
         }
-        
-        return $this;
+        return null;
     }
 
-    public function getScorePsg(): ?int
-    {
-        return $this->isPsgDomicile() ? $this->scoreDomicile : $this->scoreExterieur;
-    }
-
-    public function setScorePsg(?int $score_psg): self
-    {
-        if ($this->isPsgDomicile()) {
-            $this->scoreDomicile = $score_psg;
-        } else {
-            $this->scoreExterieur = $score_psg;
+    public function getScorePsg(): ?int 
+    { 
+        if ($this->equipeDomicile === 'PSG') {
+            return $this->scoreDomicile;
+        } else if ($this->equipeExterieur === 'PSG') {
+            return $this->scoreExterieur;
         }
-        $this->updateStatut();
-        return $this;
+        return null;
     }
 
-    public function getScoreAdverse(): ?int
-    {
-        return $this->isPsgDomicile() ? $this->scoreExterieur : $this->scoreDomicile;
-    }
-
-    public function setScoreAdverse(?int $score_adverse): self
-    {
-        if ($this->isPsgDomicile()) {
-            $this->scoreExterieur = $score_adverse;
-        } else {
-            $this->scoreDomicile = $score_adverse;
+    public function getScoreAdverse(): ?int 
+    { 
+        if ($this->equipeDomicile === 'PSG') {
+            return $this->scoreExterieur;
+        } else if ($this->equipeExterieur === 'PSG') {
+            return $this->scoreDomicile;
         }
-        $this->updateStatut();
-        return $this;
-    }
-
-    public function isPsgDomicile(): ?bool
-    {
-        return $this->equipe_domicile === 'PSG';
-    }
-
-    public function setIsPsgDomicile(bool $is_psg_domicile): self
-    {
-        // Si on change le statut domicile/extérieur
-        if ($is_psg_domicile !== $this->isPsgDomicile()) {
-            $equipe_adverse = $this->getEquipeAdverse();
-            $score_psg = $this->getScorePsg();
-            $score_adverse = $this->getScoreAdverse();
-            
-            if ($is_psg_domicile) {
-                $this->equipe_domicile = 'PSG';
-                $this->equipe_exterieur = $equipe_adverse;
-                $this->scoreDomicile = $score_psg;
-                $this->scoreExterieur = $score_adverse;
-            } else {
-                $this->equipe_domicile = $equipe_adverse;
-                $this->equipe_exterieur = 'PSG';
-                $this->scoreDomicile = $score_adverse;
-                $this->scoreExterieur = $score_psg;
-            }
-        }
-        
-        return $this;
-    }
-    
-    /**
-     * Met à jour le statut du match en fonction des scores
-     */
-    private function updateStatut(): void
-    {
-        if ($this->scoreDomicile !== null && $this->scoreExterieur !== null) {
-            $this->statut = 'termine';
-        }
-        
-        // Mettre à jour la date de modification
-        $this->updatedAt = new \DateTime();
+        return null;
     }
 }

@@ -543,7 +543,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.PctVGTY"/>
+      <argument type="service" id=".service_locator.vxxPTkp"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1940,7 +1940,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.PctVGTY"/>
+      <argument type="service" id=".service_locator.vxxPTkp"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -6494,9 +6494,9 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
-    <service id=".service_locator.Kq27LHM.App\Controller\EntrainementController::addEntrainement()" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\EntrainementController::addEntrainement()"/>
-      <argument>App\Controller\EntrainementController::addEntrainement()</argument>
+    <service id=".service_locator.Kq27LHM.App\Controller\EntrainementController::createEntrainement()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\EntrainementController::createEntrainement()"/>
+      <argument>App\Controller\EntrainementController::createEntrainement()</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
@@ -6509,18 +6509,6 @@
     <service id=".service_locator.Kq27LHM.App\Controller\EntrainementController::deleteEntrainement()" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\EntrainementController::deleteEntrainement()"/>
       <argument>App\Controller\EntrainementController::deleteEntrainement()</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.Kq27LHM" method="withContext"/>
-    </service>
-    <service id=".service_locator.Kq27LHM.App\Controller\EntrainementController::assignerJoueurEntrainement()" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\EntrainementController::assignerJoueurEntrainement()"/>
-      <argument>App\Controller\EntrainementController::assignerJoueurEntrainement()</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.Kq27LHM" method="withContext"/>
-    </service>
-    <service id=".service_locator.Kq27LHM.App\Controller\EntrainementController::retirerJoueurEntrainement()" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\EntrainementController::retirerJoueurEntrainement()"/>
-      <argument>App\Controller\EntrainementController::retirerJoueurEntrainement()</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
@@ -6566,9 +6554,15 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
-    <service id=".service_locator.Kq27LHM.App\Controller\MatchsController::addMatch()" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\MatchsController::addMatch()"/>
-      <argument>App\Controller\MatchsController::addMatch()</argument>
+    <service id=".service_locator.Kq27LHM.App\Controller\MatchsController::createMatch()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\MatchsController::createMatch()"/>
+      <argument>App\Controller\MatchsController::createMatch()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.Kq27LHM" method="withContext"/>
+    </service>
+    <service id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatch()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\MatchsController::getMatch()"/>
+      <argument>App\Controller\MatchsController::getMatch()</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
@@ -6590,7 +6584,13 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
-    <service id=".service_locator.PctVGTY" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.Kq27LHM.App\Controller\MatchsController::getProchainsMatchs()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\MatchsController::getProchainsMatchs()"/>
+      <argument>App\Controller\MatchsController::getProchainsMatchs()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.Kq27LHM" method="withContext"/>
+    </service>
+    <service id=".service_locator.vxxPTkp" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
@@ -6609,21 +6609,21 @@
         <argument key="App\Controller\DashboardController::getJoueursStats" type="service_closure" id=".service_locator.egipcEH.App\Controller\DashboardController::getJoueursStats()"/>
         <argument key="App\Controller\DashboardController::getBoutiqueStats" type="service_closure" id=".service_locator.egipcEH.App\Controller\DashboardController::getBoutiqueStats()"/>
         <argument key="App\Controller\EntrainementController::getEntrainements" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::getEntrainements()"/>
-        <argument key="App\Controller\EntrainementController::addEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::addEntrainement()"/>
+        <argument key="App\Controller\EntrainementController::createEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::createEntrainement()"/>
         <argument key="App\Controller\EntrainementController::updateEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::updateEntrainement()"/>
         <argument key="App\Controller\EntrainementController::deleteEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::deleteEntrainement()"/>
-        <argument key="App\Controller\EntrainementController::assignerJoueurEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::assignerJoueurEntrainement()"/>
-        <argument key="App\Controller\EntrainementController::retirerJoueurEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::retirerJoueurEntrainement()"/>
         <argument key="App\Controller\JoueurController::getJoueurs" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::getJoueurs()"/>
         <argument key="App\Controller\JoueurController::addJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::addJoueur()"/>
         <argument key="App\Controller\JoueurController::updateJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::updateJoueur()"/>
         <argument key="App\Controller\JoueurController::deleteJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::deleteJoueur()"/>
         <argument key="App\Controller\LoginController::login" type="service_closure" id=".service_locator.OzEre6h.App\Controller\LoginController::login()"/>
         <argument key="App\Controller\MatchsController::getMatchs" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchs()"/>
-        <argument key="App\Controller\MatchsController::addMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::addMatch()"/>
+        <argument key="App\Controller\MatchsController::createMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::createMatch()"/>
+        <argument key="App\Controller\MatchsController::getMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatch()"/>
         <argument key="App\Controller\MatchsController::updateMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::updateMatch()"/>
         <argument key="App\Controller\MatchsController::deleteMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::deleteMatch()"/>
         <argument key="App\Controller\MatchsController::getMatchsStats" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchsStats()"/>
+        <argument key="App\Controller\MatchsController::getProchainsMatchs" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getProchainsMatchs()"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.zHyJIs5.kernel::loadRoutes()"/>
         <argument key="App\Controller\ActualitesController:getActualites" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\ActualitesController::getActualites()"/>
@@ -6638,21 +6638,21 @@
         <argument key="App\Controller\DashboardController:getJoueursStats" type="service_closure" id=".service_locator.egipcEH.App\Controller\DashboardController::getJoueursStats()"/>
         <argument key="App\Controller\DashboardController:getBoutiqueStats" type="service_closure" id=".service_locator.egipcEH.App\Controller\DashboardController::getBoutiqueStats()"/>
         <argument key="App\Controller\EntrainementController:getEntrainements" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::getEntrainements()"/>
-        <argument key="App\Controller\EntrainementController:addEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::addEntrainement()"/>
+        <argument key="App\Controller\EntrainementController:createEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::createEntrainement()"/>
         <argument key="App\Controller\EntrainementController:updateEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::updateEntrainement()"/>
         <argument key="App\Controller\EntrainementController:deleteEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::deleteEntrainement()"/>
-        <argument key="App\Controller\EntrainementController:assignerJoueurEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::assignerJoueurEntrainement()"/>
-        <argument key="App\Controller\EntrainementController:retirerJoueurEntrainement" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\EntrainementController::retirerJoueurEntrainement()"/>
         <argument key="App\Controller\JoueurController:getJoueurs" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::getJoueurs()"/>
         <argument key="App\Controller\JoueurController:addJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::addJoueur()"/>
         <argument key="App\Controller\JoueurController:updateJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::updateJoueur()"/>
         <argument key="App\Controller\JoueurController:deleteJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::deleteJoueur()"/>
         <argument key="App\Controller\LoginController:login" type="service_closure" id=".service_locator.OzEre6h.App\Controller\LoginController::login()"/>
         <argument key="App\Controller\MatchsController:getMatchs" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchs()"/>
-        <argument key="App\Controller\MatchsController:addMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::addMatch()"/>
+        <argument key="App\Controller\MatchsController:createMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::createMatch()"/>
+        <argument key="App\Controller\MatchsController:getMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatch()"/>
         <argument key="App\Controller\MatchsController:updateMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::updateMatch()"/>
         <argument key="App\Controller\MatchsController:deleteMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::deleteMatch()"/>
         <argument key="App\Controller\MatchsController:getMatchsStats" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchsStats()"/>
+        <argument key="App\Controller\MatchsController:getProchainsMatchs" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getProchainsMatchs()"/>
       </argument>
     </service>
     <service id=".service_locator.ea.H0ae" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -8158,7 +8158,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.pRu6x_4" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.PctVGTY"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.vxxPTkp"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.BxSdgVt"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="api_platform.hydra.name_converter.hydra_prefix"/>
