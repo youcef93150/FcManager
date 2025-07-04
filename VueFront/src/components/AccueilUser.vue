@@ -7,12 +7,12 @@
           <img src="@/assets/images/psg.png" alt="PSG Logo" class="logo-img" />
         </router-link>
       </div>
-      <div class="nav-links">
+      <!-- <div class="nav-links">
         <router-link to="/Classement">Classement</router-link>  |
         <router-link to="/psg-results">Résultats des matchs</router-link> |
         <router-link to="/JoueursUser">Voir les joueurs du club</router-link> |
         <router-link to="/BoutiqueUser">Voir les stock de la boutique</router-link>
-      </div>
+      </div> -->
       <div class="nav-actions">
         <button class="notification-btn" @click="toggleNotifications">
           <span class="notification-icon">🔔</span>
@@ -216,6 +216,13 @@
           </div>
         </div>
 
+        <!-- Classement Tab -->
+        <div v-if="activeTab === 'classement'" class="content-grid single-column">
+          <div class="main-content-full">
+            <LeagueStandings />
+          </div>
+        </div>
+
         <!-- Histoire du Club Tab -->
         <div v-if="activeTab === 'histoire'" class="content-grid single-column">
           <div class="main-content-full">
@@ -293,6 +300,101 @@
             </div>
           </div>
         </div>
+
+        <!-- Joueurs Tab -->
+        <div v-if="activeTab === 'joueurs'" class="content-grid single-column">
+          <div class="main-content-full">
+            <div class="card">
+              <h2 class="card-title">
+                👥 Joueurs du club
+              </h2>
+              <div v-if="loading" class="loading-message">
+                Chargement des joueurs...
+              </div>
+              <div v-else-if="error" class="error-message">
+                {{ error }}
+              </div>
+              <div v-else class="table-container">
+                <table class="players-table">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Nom</th>
+                      <th>Prénom</th>
+                      <th>Poste</th>
+                      <th>Pays</th>
+                      <th>Âge</th>
+                      <th>Taille</th>
+                      <th>Poids</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="joueur in joueurs" :key="joueur.id" class="player-row">
+                      <td>{{ joueur.numero_maillot || '-' }}</td>
+                      <td class="player-name">{{ joueur.nom }}</td>
+                      <td>{{ joueur.prenom }}</td>
+                      <td>
+                        <span :class="['position-badge', joueur.poste.toLowerCase()]">
+                          {{ joueur.poste }}
+                        </span>
+                      </td>
+                      <td>{{ joueur.pays_origine }}</td>
+                      <td>{{ joueur.age }} ans</td>
+                      <td>{{ joueur.taille_cm }} cm</td>
+                      <td>{{ joueur.poids_kg }} kg</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutique Tab -->
+        <div v-if="activeTab === 'boutique'" class="content-grid single-column">
+          <div class="main-content-full">
+            <div class="card">
+              <h2 class="card-title">
+                🛍️ Boutique officielle
+              </h2>
+              <div v-if="loading" class="loading-message">
+                Chargement des produits...
+              </div>
+              <div v-else-if="error" class="error-message">
+                {{ error }}
+              </div>
+              <div v-else class="products-grid">
+                <div v-for="product in products" :key="product.id" class="product-card">
+                  <div class="product-header">
+                    <h3 class="product-name">{{ product.nom }}</h3>
+                    <span class="product-price">{{ product.prix }}€</span>
+                  </div>
+                  <div class="product-details">
+                    <p class="product-description">{{ product.description }}</p>
+                    <div class="product-attributes">
+                      <span v-if="product.taille" class="attribute">
+                        📏 {{ product.taille }}
+                      </span>
+                      <span v-if="product.couleur" class="attribute">
+                        🎨 {{ product.couleur }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="product-footer">
+                    <span :class="getStockClass(product.stock)">
+                      <span v-if="product.stock > 0">
+                        📦 {{ product.stock }} en stock
+                      </span>
+                      <span v-else class="out-of-stock">
+                        ❌ Rupture de stock
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -314,7 +416,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+import LeagueStandings from '@/components/LeagueStandings.vue';
+
 export default {
+  components: {
+    LeagueStandings
+  },
   data() {
     return {
       activeTab: 'actualites',
@@ -322,87 +430,29 @@ export default {
       tabs: [
         { id: 'actualites', label: 'Actualités du club' },
         { id: 'matches', label: 'Prochains matchs' },
-        { id: 'histoire', label: 'Histoire du club' }
+        { id: 'classement', label: 'Classement' },
+        { id: 'histoire', label: 'Histoire du club' },
+        { id: 'joueurs', label: 'Joueurs du club' },
+        { id: 'boutique', label: 'Boutique' },
+        
       ],
       stats: {
-        totalJoueurs: 25,
-        matchsJoues: 18,
-        victoires: 14
+        totalJoueurs: 0,
+        matchsJoues: 0,
+        victoires: 0
       },
       notifications: [
-        { id: 1, message: "Nouveau match programmé contre l'OM", time: "Il y a 2h", type: "info" },
-        { id: 2, message: "Billetterie ouverte pour PSG vs Monaco", time: "Il y a 5h", type: "success" },
-        { id: 3, message: "Conférence de presse avant le match", time: "Hier", type: "info" }
+        
       ],
-      clubNews: [
-        {
-          id: 1,
-          title: "Victoire éclatante 3-0 contre Lille",
-          content: "Le PSG s'impose avec brio au Parc des Princes grâce à un triplé de Mbappé...",
-          date: "2025-06-18",
-          likes: 1250,
-          comments: 89
-        },
-        {
-          id: 2,
-          title: "Nouveau partenariat stratégique annoncé",
-          content: "Le club parisien renforce ses alliances commerciales pour les prochaines saisons...",
-          date: "2025-06-17",
-          likes: 856,
-          comments: 45
-        },
-        {
-          id: 3,
-          title: "Stage d'été au Qatar confirmé",
-          content: "Les joueurs se prépareront dans des conditions optimales pour la nouvelle saison...",
-          date: "2025-06-16",
-          likes: 967,
-          comments: 52
-        }
-      ],
-      upcomingMatches: [
-        { 
-          id: 1, 
-          opponent: "Olympique de Marseille", 
-          date: "2025-06-25", 
-          time: "21:00", 
-          venue: "Domicile",
-          competition: "Ligue 1",
-          stadium: "Parc des Princes"
-        },
-        { 
-          id: 2, 
-          opponent: "AS Monaco", 
-          date: "2025-07-02", 
-          time: "17:00", 
-          venue: "Extérieur",
-          competition: "Ligue 1",
-          stadium: "Stade Louis II"
-        },
-        { 
-          id: 3, 
-          opponent: "Olympique Lyonnais", 
-          date: "2025-07-10", 
-          time: "20:45", 
-          venue: "Domicile",
-          competition: "Coupe de France",
-          stadium: "Parc des Princes"
-        }
-      ],
-      recentResults: [
-        { id: 1, homeTeam: "PSG", awayTeam: "Lille", score: "3-0", date: "15/06" },
-        { id: 2, homeTeam: "Nice", awayTeam: "PSG", score: "1-2", date: "12/06" },
-        { id: 3, homeTeam: "PSG", awayTeam: "Rennes", score: "4-1", date: "08/06" }
-      ],
+      clubNews: [],
+      upcomingMatches: [],
+      recentResults: [],
       teamStats: {
-        goalsFor: 45,
-        goalsAgainst: 12,
-        avgPossession: 68
+        goalsFor: 0,
+        goalsAgainst: 0,
+        avgPossession: 0
       },
-      homeMatches: [
-        { id: 1, opponent: "Olympique de Marseille", date: "25/06" },
-        { id: 2, opponent: "Olympique Lyonnais", date: "10/07" }
-      ],
+      homeMatches: [],
       broadcastInfo: [
         { 
           match: "PSG vs OM", 
@@ -412,29 +462,184 @@ export default {
           match: "PSG vs Lyon", 
           channels: ["France 2", "Canal+"] 
         }
-      ]
+      ],
+      joueurs: [],
+      products: [],
+      loading: false,
+      error: null
     }
   },
-  async mounted() {
-    // Vérifier l'authentification
-    if (!localStorage.getItem('authToken')) {
-      this.$router.push('/login');
-      return;
-    }
-
-    // Vérifier le rôle utilisateur
-    const userRole = localStorage.getItem('userRole');
-    if (userRole === 'admin') {
-      this.$router.push('/AccueilAdmin');
-      return;
-    }
+  mounted() {
+    this.loadAllData();
   },
   methods: {
+    async loadAllData() {
+      this.loading = true;
+      try {
+        await Promise.all([
+          this.fetchActualites(),
+          this.fetchMatchs(),
+          this.fetchJoueurs(),
+          this.fetchProducts()
+        ]);
+        this.calculateStats();
+      } catch (error) {
+        this.error = "Erreur lors du chargement des données";
+        console.error("Erreur:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async fetchActualites() {
+      try {
+        const response = await axios.get("http://localhost:8000/api/actualites");
+        this.clubNews = response.data.map(actualite => ({
+          id: actualite.id,
+          title: actualite.titre,
+          content: actualite.contenu,
+          date: this.formatDate(actualite.date_publication),
+          likes: actualite.likes || 0,
+          comments: actualite.commentaires || 0,
+          author: actualite.auteur,
+          imageUrl: actualite.image_url,
+          status: actualite.statut
+        }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des actualités:", error);
+      }
+    },
+
+    async fetchMatchs() {
+      try {
+        const response = await axios.get("http://localhost:8000/api/matchs");
+        const matchs = response.data;
+        
+        // Séparer les matchs futurs et passés
+        const now = new Date();
+        
+        this.upcomingMatches = matchs
+          .filter(match => new Date(match.date_match) > now && match.statut !== 'terminé')
+          .map(match => ({
+            id: match.id,
+            opponent: match.equipe_adverse,
+            date: this.formatDate(match.date_match),
+            time: this.formatTime(match.date_match),
+            venue: match.lieu,
+            competition: match.competition,
+            stadium: match.stade
+          }))
+          .slice(0, 5);
+
+        this.recentResults = matchs
+          .filter(match => match.statut === 'terminé')
+          .map(match => ({
+            id: match.id,
+            homeTeam: match.equipe_domicile,
+            awayTeam: match.equipe_exterieur,
+            score: `${match.score_domicile || 0}-${match.score_exterieur || 0}`,
+            date: this.formatDateShort(match.date_match)
+          }))
+          .slice(0, 5);
+
+        // Matchs à domicile pour la billetterie
+        this.homeMatches = this.upcomingMatches
+          .filter(match => match.venue === 'Domicile')
+          .slice(0, 3);
+
+      } catch (error) {
+        console.error("Erreur lors de la récupération des matchs:", error);
+      }
+    },
+
+    async fetchJoueurs() {
+      try {
+        const response = await axios.get("http://localhost:8000/api/joueurs");
+        this.joueurs = response.data;
+      } catch (error) {
+        console.error("Erreur lors de la récupération des joueurs:", error);
+      }
+    },
+
+    async fetchProducts() {
+      try {
+        const response = await axios.get("http://localhost:8000/api/produits");
+        this.products = response.data;
+      } catch (error) {
+        console.error("Erreur lors de la récupération des produits:", error);
+      }
+    },
+
+    calculateStats() {
+      // Calculer les statistiques basées sur les vraies données
+      this.stats.totalJoueurs = this.joueurs.length;
+      
+      const termines = this.recentResults.length;
+      this.stats.matchsJoues = termines;
+      
+      // Compter les victoires du PSG
+      let victoires = 0;
+      this.recentResults.forEach(result => {
+        const scores = result.score.split('-');
+        const scorePSG = result.homeTeam === 'PSG' ? parseInt(scores[0]) : parseInt(scores[1]);
+        const scoreAdverse = result.homeTeam === 'PSG' ? parseInt(scores[1]) : parseInt(scores[0]);
+        if (scorePSG > scoreAdverse) {
+          victoires++;
+        }
+      });
+      this.stats.victoires = victoires;
+
+      // Calculer les stats d'équipe
+      let butsMarques = 0, butsEncaisses = 0;
+      this.recentResults.forEach(result => {
+        const scores = result.score.split('-');
+        if (result.homeTeam === 'PSG') {
+          butsMarques += parseInt(scores[0]) || 0;
+          butsEncaisses += parseInt(scores[1]) || 0;
+        } else {
+          butsMarques += parseInt(scores[1]) || 0;
+          butsEncaisses += parseInt(scores[0]) || 0;
+        }
+      });
+      
+      this.teamStats.goalsFor = butsMarques;
+      this.teamStats.goalsAgainst = butsEncaisses;
+      this.teamStats.avgPossession = 68; // Valeur par défaut, peut être calculée différemment
+    },
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    },
+
+    formatDateShort(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('fr-FR', {
+        month: '2-digit',
+        day: '2-digit'
+      });
+    },
+
+    formatTime(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    },
+
+    getStockClass(stock) {
+      if (stock === 0) return 'product-stock out';
+      if (stock < 5) return 'product-stock low';
+      return 'product-stock';
+    },
+
     logout() {
-      // Nettoyer toutes les données d'authentification
       localStorage.removeItem("authToken");
-      localStorage.removeItem("userRole");
-      localStorage.removeItem("userId");
       this.$router.push("/login");
     },
     toggleNotifications() {
@@ -450,692 +655,7 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Navigation */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #002b5c; 
-  padding: 15px 25px;
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.logo-img {
-  height: 50px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-  color: #c8102e; 
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.notification-btn {
-  position: relative;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.notification-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.notification-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #c8102e;
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logout-button {
-  background-color: #c8102e; 
-  border: none;
-  padding: 12px 18px;
-  color: white;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #9b0d20; 
-}
-
-/* Hero Section */
-.hero-section {
-  background: linear-gradient(45deg, #002b5c, #c8102e);
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.hero-title {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.hero-description {
-  font-size: 20px;
-  margin-bottom: 30px;
-}
-
-/* Dashboard Tabs */
-.dashboard-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.tab-button {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.tab-button:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.tab-button.active {
-  background-color: white;
-  color: #002b5c;
-  font-weight: bold;
-}
-
-/* Dashboard Container */
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  background-color: #f5f5f5;
-  min-height: 70vh;
-}
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #002b5c;
-}
-
-.stat-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.stat-label {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.stat-value {
-  color: #002b5c;
-  font-size: 28px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.stat-icon {
-  font-size: 32px;
-  opacity: 0.8;
-}
-
-/* Content Grid */
-.content-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;
-}
-
-.content-grid.single-column {
-  grid-template-columns: 1fr;
-}
-
-.main-content, .sidebar, .main-content-full {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Cards */
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #002b5c;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* News */
-.news-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.news-item {
-  display: flex;
-  gap: 16px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.news-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.news-image {
-  flex-shrink: 0;
-}
-
-.placeholder-image {
-  width: 80px;
-  height: 80px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-.placeholder-image.large {
-  width: 120px;
-  height: 120px;
-  font-size: 36px;
-  margin: 0 auto 10px;
-}
-
-.news-content {
-  flex: 1;
-}
-
-.news-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #002b5c;
-  margin-bottom: 8px;
-}
-
-.news-description {
-  color: #666;
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-
-.news-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.news-date {
-  color: #999;
-  font-size: 14px;
-}
-
-.news-engagement {
-  display: flex;
-  gap: 12px;
-}
-
-.engagement-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #666;
-  font-size: 14px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.engagement-btn:hover {
-  background-color: #f5f5f5;
-}
-
-/* Matches */
-.matches-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.match-item {
-  background: linear-gradient(135deg, #f8f9ff 0%, #fff5f5 100%);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #eee;
-}
-
-.match-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.match-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #002b5c;
-  margin: 0;
-}
-
-.venue-badge {
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.venue-badge.domicile {
-  background-color: #e3f2fd;
-  color: #1976d2;
-}
-
-.venue-badge.extérieur {
-  background-color: #ffebee;
-  color: #d32f2f;
-}
-
-.match-details {
-  display: flex;
-  gap: 20px;
-  color: #666;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.match-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.match-competition {
-  color: #002b5c;
-  font-weight: 500;
-  margin: 0;
-}
-
-.reminder-btn {
-  background-color: #002b5c;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.reminder-btn:hover {
-  background-color: #001a3d;
-}
-
-/* Results */
-.recent-results {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.result-item {
-  background-color: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
-  border-left: 4px solid #28a745;
-}
-
-.teams {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.team {
-  font-weight: 500;
-  color: #002b5c;
-}
-
-.score {
-  font-weight: bold;
-  color: #28a745;
-}
-
-.match-date {
-  font-size: 12px;
-  color: #666;
-}
-
-/* Stats */
-.team-stats, .stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.stat-row:last-child {
-  border-bottom: none;
-}
-
-/* Tickets & Broadcast */
-.ticket-info, .broadcast-info {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.ticket-match {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-}
-
-.ticket-match-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.ticket-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.broadcast-item {
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.broadcast-item:last-child {
-  border-bottom: none;
-}
-
-.broadcast-match {
-  font-weight: 500;
-  color: #002b5c;
-  margin-bottom: 4px;
-}
-
-.broadcast-channels {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.channel-tag {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 500;
-}
-
-/* History Section */
-.history-content {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.history-section {
-  background-color: #fafafa;
-  padding: 24px;
-  border-radius: 12px;
-  border-left: 4px solid #002b5c;
-}
-
-.history-subtitle {
-  color: #002b5c;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.history-text {
-  color: #333;
-  line-height: 1.6;
-  margin-bottom: 20px;
-  text-align: justify;
-}
-
-.history-image {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.image-caption {
-  color: #666;
-  font-style: italic;
-  margin-top: 8px;
-  font-size: 14px;
-}
-
-/* Achievements */
-.achievements {
-  background: linear-gradient(135deg, #f8f9ff 0%, #fff5f5 100%);
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid #eee;
-}
-
-.trophies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.trophy-item {
-  text-align: center;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.trophy-icon {
-  font-size: 32px;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.trophy-count {
-  display: block;
-  font-size: 24px;
-  font-weight: bold;
-  color: #002b5c;
-  margin-bottom: 4px;
-}
-
-.trophy-name {
-  display: block;
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-}
-
-/* Notifications Panel */
-.notifications-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 100vh;
-  background: white;
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-}
-
-.notifications-header {
-  padding: 20px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #002b5c;
-  color: white;
-}
-
-.notifications-header button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.notifications-body {
-  padding: 20px;
-  height: calc(100vh - 80px);
-  overflow-y: auto;
-}
-
-.notifications-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.notification-item {
-  padding: 16px;
-  border-radius: 8px;
-  border-left: 4px solid;
-}
-
-.notification-item.info {
-  background-color: #e3f2fd;
-  border-left-color: #1976d2;
-}
-
-.notification-item.warning {
-  background-color: #fff8e1;
-  border-left-color: #f57c00;
-}
-
-.notification-item.success {
-  background-color: #e8f5e8;
-  border-left-color: #388e3c;
-}
-
-.notification-message {
-  color: #002b5c;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.notification-time {
-  color: #666;
-  font-size: 12px;
-  margin: 0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-  
-  .dashboard-tabs {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .notifications-panel {
-    width: 100%;
-  }
-  
-  .match-details {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .trophies-grid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  }
-}
+<style>
+@import '@/assets/styles/user.css';
 </style>
+

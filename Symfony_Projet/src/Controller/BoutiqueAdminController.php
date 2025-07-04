@@ -10,6 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BoutiqueAdminController extends AbstractController
 {
+    private function addCorsHeaders(JsonResponse $response): JsonResponse
+    {
+        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:5173');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        return $response;
+    }
+
     public function addProduct(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -40,8 +48,32 @@ class BoutiqueAdminController extends AbstractController
 
     public function getProducts(EntityManagerInterface $em): JsonResponse
     {
-        $products = $em->getRepository(Product::class)->findAll();
-        return $this->json($products);
+        try {
+            $products = $em->getRepository(Product::class)->findAll();
+            
+            $productsData = [];
+            foreach ($products as $product) {
+                $productsData[] = [
+                    'id' => $product->getId(),
+                    'nom' => $product->getNom(),
+                    'prix' => $product->getPrix(),
+                    'taille' => $product->getTaille(),
+                    'couleur' => $product->getCouleur(),
+                    'description' => $product->getDescription(),
+                    'stock' => $product->getStock()
+                ];
+            }
+            
+            $response = new JsonResponse($productsData);
+            return $this->addCorsHeaders($response);
+            
+        } catch (\Exception $e) {
+            $response = new JsonResponse([
+                'error' => 'Erreur lors de la récupération des produits',
+                'details' => $e->getMessage()
+            ], 500);
+            return $this->addCorsHeaders($response);
+        }
     }
 
     public function deleteProduct(int $id, EntityManagerInterface $em): JsonResponse

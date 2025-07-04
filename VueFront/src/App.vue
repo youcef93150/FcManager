@@ -1,14 +1,12 @@
 
 <template>
   <div id="app">
-    
-
     <router-view />
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"; 
 
 export default {
   data() {
@@ -59,39 +57,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.navbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #333;
-  padding: 10px 20px;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 16px;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: #007bff;
-}
-
-.nav-button {
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.nav-button:hover {
-  background-color: #0056b3;
-}
-</style>
+<!-- Styles supprimés - Utilisation du CSS global main.css -->

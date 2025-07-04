@@ -8,7 +8,7 @@
         </router-link>
       </div>
       <div class="nav-links">
-        <router-link to="/Classement">Classement</router-link>  |
+        <router-link to="/AccueilUser">Accueil</router-link>  |
         <router-link to="/JoueursUser">Voir les joueurs du club</router-link> |
         <router-link to="/BoutiqueUser">Stocks Boutique</router-link>
       </div>
@@ -24,28 +24,30 @@
           {{ team }}
         </option>
       </select>
-      <table class="results-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Heure</th>
-            <th>Domicile</th>
-            <th>Extérieur</th>
-            <th>Score</th>
-            <th>Saison</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="match in filteredResults" :key="match.id">
-            <td>{{ match.Date_day }}</td>
-            <td>{{ match.Date_hour }}</td>
-            <td>{{ match.home_team }}</td>
-            <td>{{ match.away_team }}</td>
-            <td>{{ match.home_score }} - {{ match.away_score }}</td>
-            <td>{{ match.season_year }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Domicile</th>
+              <th>Extérieur</th>
+              <th>Score</th>
+              <th>Saison</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="match in filteredResults" :key="match.id">
+              <td>{{ match.Date_day }}</td>
+              <td>{{ match.Date_hour }}</td>
+              <td>{{ match.home_team }}</td>
+              <td>{{ match.away_team }}</td>
+              <td>{{ match.home_score }} - {{ match.away_score }}</td>
+              <td>{{ match.season_year }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -108,125 +110,7 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Style de la barre de navigation */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #002b5c; 
-  padding: 15px 25px;
-  color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.logo-img {
-  height: 50px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-  color: #c8102e; 
-}
-
-.logout-button {
-  background-color: #c8102e; 
-  border: none;
-  padding: 12px 18px;
-  color: white;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #9b0d20;
-}
-
-/* Conteneur principal */
-.psg-results {
-  font-family: Arial, sans-serif;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f4f4f4; 
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-h1 {
-  color: #002b5c;
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* Sélecteur d'équipe */
-.team-select {
-  margin-bottom: 20px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #ffffff; 
-  color: #002b5c; 
-}
-
-/* Table des résultats */
-.results-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #ffffff; 
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
-  font-size: 16px;
-}
-
-th {
-  background-color: #002b5c; 
-  color: white;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9; 
-}
-
-tr:hover {
-  background-color: #ddd; 
-}
-
-/* Réactivité */
-@media (max-width: 768px) {
-  .results-table th,
-  .results-table td {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
+<style>
+@import '@/assets/styles/user.css';
 </style>
+

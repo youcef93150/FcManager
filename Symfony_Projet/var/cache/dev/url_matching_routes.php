@@ -8,8 +8,8 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/api/login' => [[['_route' => 'auth_login', '_controller' => 'App\\Controller\\LoginController::login'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
-        '/api/check-auth' => [[['_route' => 'auth_check', '_controller' => 'App\\Controller\\AuthController::checkAuth'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
+        '/api/login' => [[['_route' => 'api_login', '_controller' => 'App\\Controller\\LoginController::login'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
+        '/api/check-auth' => [[['_route' => 'auth_check', '_controller' => 'App\\Controller\\ApiController::checkAuth'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/api/dashboard/stats' => [[['_route' => 'dashboard_stats', '_controller' => 'App\\Controller\\DashboardController::getDashboardStats'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/api/dashboard/joueurs-stats' => [[['_route' => 'dashboard_joueurs_stats', '_controller' => 'App\\Controller\\DashboardController::getJoueursStats'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/api/dashboard/boutique-stats' => [[['_route' => 'dashboard_boutique_stats', '_controller' => 'App\\Controller\\DashboardController::getBoutiqueStats'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],

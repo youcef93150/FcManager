@@ -19,7 +19,6 @@ class LoginController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/api/login', name: 'api_login', methods: ['POST', 'OPTIONS'])]
     public function login(Request $request, UserRepository $userRepository): JsonResponse
     {
         // Gérer les requêtes OPTIONS pour CORS

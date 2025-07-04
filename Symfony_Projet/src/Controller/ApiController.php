@@ -79,4 +79,37 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['message' => 'Utilisateur inscrit avec succès'], JsonResponse::HTTP_CREATED);
     }
+
+    /**
+     * Connexion utilisateur
+     * 
+     * @Route("/api/login", name="login", methods={"POST"})
+     */
+    public function login(Request $request): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $email = $data['email'] ?? '';
+        $password = $data['password'] ?? '';
+
+        if (empty($email) || empty($password)) {
+            return new JsonResponse(['error' => 'Email et mot de passe requis'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        // Recherche de l'utilisateur
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if (!$user || !$this->passwordHasher->isPasswordValid($user, $password)) {
+            return new JsonResponse(['error' => 'Identifiants incorrects'], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        return new JsonResponse([
+            'message' => 'Connexion réussie',
+            'token' => $user->getApiToken(),
+            'user' => [
+                'id' => $user->getId(),
+                'email' => $user->getEmail(),
+                'role' => $user->getRole()
+            ]
+        ]);
+    }
 }

@@ -5,11 +5,12 @@ import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import BoutiqueAdmin from '@/components/BoutiqueAdmin.vue'
 import BoutiqueUser from '@/components/BoutiqueUser.vue'
-import Classement from '@/components/Classement.vue'
-import ClassementAPI from '@/components/ClassementAPI.vue'
 import JoueursAdmin from '@/components/JoueursAdmin.vue'
 import JoueursUser from '@/components/JoueursUser.vue'
+import MatchsAdmin from '@/components/MatchsAdmin.vue'
+import EntrainementsAdmin from '@/components/EntrainementsAdmin.vue'
 import PsgResults from '@/components/PsgResults.vue'
+import LeagueStandings from '@/components/LeagueStandings.vue'
 
 const routes = [
   {
@@ -52,16 +53,6 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
-    path: '/classement',
-    name: 'Classement',
-    component: Classement
-  },
-  {
-    path: '/classement-api',
-    name: 'ClassementAPI',
-    component: ClassementAPI
-  },
-  {
     path: '/joueurs',
     name: 'JoueursUser',
     component: JoueursUser,
@@ -74,9 +65,27 @@ const routes = [
     meta: { requiresAuth: true, requiresAdmin: true }
   },
   {
+    path: '/MatchsAdmin',
+    name: 'MatchsAdmin',
+    component: MatchsAdmin,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/EntrainementsAdmin',
+    name: 'EntrainementsAdmin',
+    component: EntrainementsAdmin,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
     path: '/resultats',
     name: 'PsgResults',
     component: PsgResults
+  },
+  {
+    path: '/classements',
+    name: 'LeagueStandings',
+    component: LeagueStandings,
+    meta: { requiresAuth: true }
   }
 ]
 

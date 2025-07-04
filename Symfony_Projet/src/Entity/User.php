@@ -74,7 +74,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->apiToken = $apiToken;
         return $this;
     }
-
     
     public function getRoles(): array
     {

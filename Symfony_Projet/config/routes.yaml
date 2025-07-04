@@ -1,13 +1,13 @@
 
 # Routes d'authentification
-auth_login:
+api_login:
     path: /api/login
     controller: App\Controller\LoginController::login
     methods: [POST, OPTIONS]
 
 auth_check:
     path: /api/check-auth
-    controller: App\Controller\AuthController::checkAuth
+    controller: App\Controller\ApiController::checkAuth
     methods: [GET, OPTIONS]
 
 # ========================================

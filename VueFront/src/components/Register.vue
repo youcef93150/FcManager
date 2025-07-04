@@ -1,61 +1,66 @@
 
 
 <template>
-  <header>
-      <h1>S'inscrire</h1>
-  </header>
+  <div class="auth-container">
+    <div class="auth-card">
+      <h1 class="auth-title">S'inscrire</h1>
 
-  <div>
-      <form @submit.prevent="handleSubmit">
-          <div>
-              <label for="nom">Nom : </label>
-              <input
-                  id="nom"
-                  v-model="nom"
-                  type="text"
-                  placeholder="Entrez votre nom"
-                  required
-              />
-          </div>
-          <div>
-              <label for="prenom">Prénom : </label>
-              <input
-                  id="prenom"
-                  v-model="prenom"
-                  type="text"
-                  placeholder="Entrez votre prénom"
-                  required
-              />
-          </div>
+      <form @submit.prevent="handleSubmit" class="auth-form">
+        <div class="form-group">
+          <label for="nom" class="form-label">Nom</label>
+          <input
+            id="nom"
+            v-model="nom"
+            type="text"
+            placeholder="Entrez votre nom"
+            class="input"
+            required
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="prenom" class="form-label">Prénom</label>
+          <input
+            id="prenom"
+            v-model="prenom"
+            type="text"
+            placeholder="Entrez votre prénom"
+            class="input"
+            required
+          />
+        </div>
 
-          <div>
-              <label for="email">Email : </label>
-              <input
-                  id="email"
-                  v-model="email"
-                  type="email"
-                  placeholder="Entrez votre email"
-                  required
-              />
-          </div>
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            v-model="email"
+            type="email"
+            placeholder="Entrez votre email"
+            class="input"
+            required
+          />
+        </div>
 
-          <div>
-              <label for="password">Mot de passe : </label>
-              <input
-                  id="password"
-                  v-model="password"
-                  type="password"
-                  placeholder="Entrez votre mot de passe"
-                  required
-              />
-          </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input
+            id="password"
+            v-model="password"
+            type="password"
+            placeholder="Entrez votre mot de passe"
+            class="input"
+            required
+          />
+        </div>
 
-          <button type="submit">S'inscrire</button>
+        <button type="submit" class="btn btn-primary w-full">S'inscrire</button>
       </form>
-  </div>
 
-  <div class="login-link">
-    <p>Déjà un compte ? <router-link to="/login">Connectez-vous</router-link></p>
+      <div class="auth-link">
+        <p>Déjà un compte ? <router-link to="/login">Connectez-vous</router-link></p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,83 +122,6 @@ export default {
 };
 </script>
 
-<style scoped>
-/* En-tête */
-header {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #002b5c; 
-    font-weight: bold;
-}
-
-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #c8102e; 
-    border-radius: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff; 
-}
-
-div {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #002b5c; 
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: #f4f4f4;
-    transition: border-color 0.3s;
-}
-
-input:focus {
-    border-color: #c8102e; 
-    outline: none;
-}
-
-/* Bouton */
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #002b5c; 
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #c8102e;
-}
-
-
-.login-link {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.login-link a {
-    color: #c8102e; 
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.login-link a:hover {
-    text-decoration: underline;
-    color: #002b5c; 
-}
+<style>
+@import '@/assets/styles/user.css';
 </style>

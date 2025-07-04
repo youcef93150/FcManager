@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-psg_app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-MotDePasseSecret123!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-psg_app}", "-U", "${POSTGRES_USER:-app}"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Backend Symfony
+  backend:
+    build:
+      context: ./Symfony_Projet
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - APP_ENV=${APP_ENV:-prod}
+      - APP_SECRET=${APP_SECRET:-ChangezCetteClëSecrete123456789}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-MotDePasseSecret123!}@database:5432/${POSTGRES_DB:-psg_app}?serverVersion=16&charset=utf8
+      - CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN:-http://localhost:3000}
+    volumes:
+      - ./Symfony_Projet:/var/www/html
+      - symfony_var:/var/www/html/var
+    restart: unless-stopped
+
+  # Frontend Vue.js
+  frontend:
+    build:
+      context: ./VueFront
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  database_data:
+  symfony_var:

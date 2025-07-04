@@ -11,6 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MatchsController extends AbstractController
 {
+    private function addCorsHeaders(JsonResponse $response): JsonResponse
+    {
+        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:5173');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        return $response;
+    }
+
     #[Route('/api/matchs', name: 'matchs_list', methods: ['GET'])]
     public function getMatchs(EntityManagerInterface $em): JsonResponse
     {
@@ -38,13 +46,15 @@ class MatchsController extends AbstractController
                 ];
             }
             
-            return new JsonResponse($matchsArray);
+            $response = new JsonResponse($matchsArray);
+            return $this->addCorsHeaders($response);
             
         } catch (\Exception $e) {
-            return new JsonResponse([
+            $response = new JsonResponse([
                 'error' => 'Erreur lors de la récupération des matchs',
                 'details' => $e->getMessage()
             ], 500);
+            return $this->addCorsHeaders($response);
         }
     }
 

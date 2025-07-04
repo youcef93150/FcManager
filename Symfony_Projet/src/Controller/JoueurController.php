@@ -11,26 +11,44 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class JoueurController extends AbstractController
 {
+    private function addCorsHeaders(JsonResponse $response): JsonResponse
+    {
+        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:5173');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        return $response;
+    }
+
     #[Route('/api/joueurs', name: 'get_joueurs', methods: ['GET'])]
     public function getJoueurs(EntityManagerInterface $entityManager): JsonResponse
     {
-        $joueurs = $entityManager->getRepository(Joueurs::class)->findAll();
-        $joueursData = array_map(function ($joueur) {
-            return [
-                'id' => $joueur->getId(),
-                'nom' => $joueur->getNom(),
-                'prenom' => $joueur->getPrenom(),
-                'poste' => $joueur->getPoste(),
-                'equipe' => $joueur->getEquipe(),
-                'pays_origine' => $joueur->getPaysOrigine(), 
-                'age' => $joueur->getAge(),
-                'taille_cm' => $joueur->getTailleCm(),
-                'poids_kg' => $joueur->getPoidsKg(),
-                'numero_maillot' => $joueur->getNumeroMaillot(),
-            ];
-        }, $joueurs);
+        try {
+            $joueurs = $entityManager->getRepository(Joueurs::class)->findAll();
+            $joueursData = array_map(function ($joueur) {
+                return [
+                    'id' => $joueur->getId(),
+                    'nom' => $joueur->getNom(),
+                    'prenom' => $joueur->getPrenom(),
+                    'poste' => $joueur->getPoste(),
+                    'equipe' => $joueur->getEquipe(),
+                    'pays_origine' => $joueur->getPaysOrigine(), 
+                    'age' => $joueur->getAge(),
+                    'taille_cm' => $joueur->getTailleCm(),
+                    'poids_kg' => $joueur->getPoidsKg(),
+                    'numero_maillot' => $joueur->getNumeroMaillot(),
+                ];
+            }, $joueurs);
 
-        return new JsonResponse($joueursData);
+            $response = new JsonResponse($joueursData);
+            return $this->addCorsHeaders($response);
+            
+        } catch (\Exception $e) {
+            $response = new JsonResponse([
+                'error' => 'Erreur lors de la récupération des joueurs',
+                'details' => $e->getMessage()
+            ], 500);
+            return $this->addCorsHeaders($response);
+        }
     }
 
     #[Route('/api/joueurs', name: 'add_joueur', methods: ['POST'])]
