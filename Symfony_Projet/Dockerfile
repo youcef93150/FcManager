@@ -3,14 +3,14 @@ FROM php:8.2-apache
 
 # Installation des extensions PHP nécessaires
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
+    default-mysql-client \
     libzip-dev \
     unzip \
     git \
     curl \
     && docker-php-ext-install \
-    pdo_pgsql \
-    pgsql \
+    pdo_mysql \
+    mysqli \
     zip \
     opcache \
     && apt-get clean \
@@ -27,7 +27,7 @@ RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
     && echo "opcache.validate_timestamps=0" >> /usr/local/etc/php/conf.d/opcache.ini
 
 # Configuration Apache
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Définir le répertoire de travail

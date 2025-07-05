@@ -212,6 +212,7 @@
     <parameter key="nelmio_cors.map" type="collection">
       <parameter key="^/api/" type="collection">
         <parameter key="allow_origin" type="collection">
+          <parameter>http://localhost:3000</parameter>
           <parameter>http://localhost:5173</parameter>
         </parameter>
         <parameter key="allow_headers" type="collection">
@@ -230,6 +231,7 @@
     </parameter>
     <parameter key="nelmio_cors.defaults" type="collection">
       <parameter key="allow_origin" type="collection">
+        <parameter>http://localhost:3000</parameter>
         <parameter>http://localhost:5173</parameter>
       </parameter>
       <parameter key="allow_credentials">false</parameter>
@@ -451,14 +453,6 @@
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\ApiController"/>
       </call>
     </service>
-    <service id="App\Controller\AuthController" class="App\Controller\AuthController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <tag name="container.service_subscriber"/>
-      <argument type="service" id="doctrine.orm.default_entity_manager"/>
-      <call method="setContainer">
-        <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\AuthController"/>
-      </call>
-    </service>
     <service id="App\Controller\BoutiqueAdminController" class="App\Controller\BoutiqueAdminController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -471,6 +465,13 @@
       <tag name="container.service_subscriber"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\DashboardController"/>
+      </call>
+    </service>
+    <service id="App\Controller\DebugController" class="App\Controller\DebugController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.ZyP9f7K.App\Controller\DebugController"/>
       </call>
     </service>
     <service id="App\Controller\EntrainementController" class="App\Controller\EntrainementController" public="true" autowire="true" autoconfigure="true">
@@ -544,7 +545,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.R12GaDq"/>
+      <argument type="service" id=".service_locator.GOLlEzQ"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1941,7 +1942,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.R12GaDq"/>
+      <argument type="service" id=".service_locator.GOLlEzQ"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -5842,15 +5843,15 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ApiController" class="App\Controller\ApiController" public="true" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ApiController" class="App\Controller\ApiController" public="true" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\ApiController" class="App\Controller\ApiController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AuthController" class="App\Controller\AuthController" public="true" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\AuthController" class="App\Controller\AuthController" public="true" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\AuthController" class="App\Controller\AuthController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\BoutiqueAdminController" class="App\Controller\BoutiqueAdminController" public="true" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\BoutiqueAdminController" class="App\Controller\BoutiqueAdminController" public="true" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\BoutiqueAdminController" class="App\Controller\BoutiqueAdminController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\DashboardController" class="App\Controller\DashboardController" public="true" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\DashboardController" class="App\Controller\DashboardController" public="true" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\DashboardController" class="App\Controller\DashboardController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\DebugController" class="App\Controller\DebugController" public="true" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\DebugController" class="App\Controller\DebugController" public="true" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\DebugController" class="App\Controller\DebugController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\EntrainementController" class="App\Controller\EntrainementController" public="true" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\EntrainementController" class="App\Controller\EntrainementController" public="true" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\EntrainementController" class="App\Controller\EntrainementController" public="true" autowire="true" autoconfigure="true" abstract="true"/>
@@ -6545,6 +6546,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.OzEre6h" method="withContext"/>
     </service>
+    <service id=".service_locator.OzEre6h.App\Controller\LoginController::register()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\LoginController::register()"/>
+      <argument>App\Controller\LoginController::register()</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.OzEre6h" method="withContext"/>
+    </service>
     <service id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchs()" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\MatchsController::getMatchs()"/>
       <argument>App\Controller\MatchsController::getMatchs()</argument>
@@ -6587,7 +6594,7 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Kq27LHM" method="withContext"/>
     </service>
-    <service id=".service_locator.R12GaDq" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.GOLlEzQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
@@ -6613,6 +6620,7 @@
         <argument key="App\Controller\JoueurController::updateJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::updateJoueur()"/>
         <argument key="App\Controller\JoueurController::deleteJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::deleteJoueur()"/>
         <argument key="App\Controller\LoginController::login" type="service_closure" id=".service_locator.OzEre6h.App\Controller\LoginController::login()"/>
+        <argument key="App\Controller\LoginController::register" type="service_closure" id=".service_locator.OzEre6h.App\Controller\LoginController::register()"/>
         <argument key="App\Controller\MatchsController::getMatchs" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchs()"/>
         <argument key="App\Controller\MatchsController::createMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::createMatch()"/>
         <argument key="App\Controller\MatchsController::getMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatch()"/>
@@ -6641,6 +6649,7 @@
         <argument key="App\Controller\JoueurController:updateJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::updateJoueur()"/>
         <argument key="App\Controller\JoueurController:deleteJoueur" type="service_closure" id=".service_locator.egipcEH.App\Controller\JoueurController::deleteJoueur()"/>
         <argument key="App\Controller\LoginController:login" type="service_closure" id=".service_locator.OzEre6h.App\Controller\LoginController::login()"/>
+        <argument key="App\Controller\LoginController:register" type="service_closure" id=".service_locator.OzEre6h.App\Controller\LoginController::register()"/>
         <argument key="App\Controller\MatchsController:getMatchs" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatchs()"/>
         <argument key="App\Controller\MatchsController:createMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::createMatch()"/>
         <argument key="App\Controller\MatchsController:getMatch" type="service_closure" id=".service_locator.Kq27LHM.App\Controller\MatchsController::getMatch()"/>
@@ -6913,12 +6922,6 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.ZyP9f7K" method="withContext"/>
     </service>
-    <service id=".service_locator.ZyP9f7K.App\Controller\AuthController" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\AuthController"/>
-      <argument>App\Controller\AuthController</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.ZyP9f7K" method="withContext"/>
-    </service>
     <service id=".service_locator.ZyP9f7K.App\Controller\BoutiqueAdminController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\BoutiqueAdminController"/>
       <argument>App\Controller\BoutiqueAdminController</argument>
@@ -6928,6 +6931,12 @@
     <service id=".service_locator.ZyP9f7K.App\Controller\DashboardController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\DashboardController"/>
       <argument>App\Controller\DashboardController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.ZyP9f7K" method="withContext"/>
+    </service>
+    <service id=".service_locator.ZyP9f7K.App\Controller\DebugController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\DebugController"/>
+      <argument>App\Controller\DebugController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.ZyP9f7K" method="withContext"/>
     </service>
@@ -7148,9 +7157,9 @@
           <argument>App\Kernel</argument>
           <argument>App\Controller\ActualitesController</argument>
           <argument>App\Controller\ApiController</argument>
-          <argument>App\Controller\AuthController</argument>
           <argument>App\Controller\BoutiqueAdminController</argument>
           <argument>App\Controller\DashboardController</argument>
+          <argument>App\Controller\DebugController</argument>
           <argument>App\Controller\EntrainementController</argument>
           <argument>App\Controller\JoueurController</argument>
           <argument>App\Controller\LoginController</argument>
@@ -8154,7 +8163,7 @@
     <service id="Psr\Log\LoggerInterface" alias="monolog.logger"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.pRu6x_4" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.R12GaDq"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.GOLlEzQ"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.BxSdgVt"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="api_platform.hydra.name_converter.hydra_prefix"/>

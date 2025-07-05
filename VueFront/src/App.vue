@@ -27,17 +27,18 @@ export default {
       }
 
       try {
-        const response = await axios.get("http://localhost:8000/api/check-auth", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Envoie du token au format Bearer
-          },
-        });
+        // Utilise axios qui a été configuré avec les intercepteurs
+        const response = await axios.get("/api/check-auth");
 
         this.isAuthenticated = true;
         this.userRole = response.data.role; // Récupère le rôle de l'utilisateur
         this.authChecked = true;
       } catch (error) {
         console.error("Erreur lors de la vérification :", error);
+        // Nettoyer le localStorage en cas d'erreur
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userId");
         this.isAuthenticated = false;
         this.authChecked = true;
       }
@@ -57,4 +58,4 @@ export default {
 };
 </script>
 
-<!-- Styles supprimés - Utilisation du CSS global main.css -->
+

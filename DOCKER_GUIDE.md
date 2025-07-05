@@ -47,10 +47,11 @@ docker-compose -f docker-compose.prod.yml exec backend php bin/console doctrine:
 
 ### Variables d'environnement (.env)
 ```bash
-# Base de données - CHANGEZ CES VALEURS
-POSTGRES_DB=psg_app
-POSTGRES_USER=app
-POSTGRES_PASSWORD=VotreMotDePasseSecurise123!
+# Base de données MySQL
+MYSQL_DATABASE=psg_app
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_ROOT_PASSWORD=
 
 # Symfony - CHANGEZ CETTE CLÉ
 APP_SECRET=VotreCleSecreteSecurise123456789
@@ -70,7 +71,7 @@ VITE_API_URL=http://localhost:8000
 |---------|-----|------|-------------|
 | Frontend | http://localhost:3000 | 3000 | Interface Vue.js |
 | Backend | http://localhost:8000 | 8000 | API Symfony |
-| Database | localhost:5432 | 5432 | PostgreSQL |
+| Database | localhost:3306 | 3306 | MySQL |
 
 ---
 
@@ -100,7 +101,7 @@ docker-compose -f docker-compose.prod.yml down -v
 docker-compose -f docker-compose.prod.yml exec backend bash
 
 # Shell dans la base de données
-docker-compose -f docker-compose.prod.yml exec database psql -U app -d psg_app
+docker-compose -f docker-compose.prod.yml exec database mysql -u root psg_app
 
 # Exécuter des commandes Symfony
 docker-compose -f docker-compose.prod.yml exec backend php bin/console cache:clear
@@ -164,7 +165,7 @@ docker-compose -f docker-compose.prod.yml config
 **Base de données non accessible**
 ```bash
 # Vérifier le statut
-docker-compose -f docker-compose.prod.yml exec database pg_isready -U app
+docker-compose -f docker-compose.prod.yml exec database mysqladmin ping -h localhost
 
 # Recréer la base
 docker-compose -f docker-compose.prod.yml down -v
@@ -235,16 +236,16 @@ server {
 ### Sauvegarde de la base de données
 ```bash
 # Créer une sauvegarde
-docker-compose -f docker-compose.prod.yml exec database pg_dump -U app psg_app > backup.sql
+docker-compose -f docker-compose.prod.yml exec database mysqldump -u root psg_app > backup.sql
 
 # Ou avec un script automatique
-docker-compose -f docker-compose.prod.yml exec database pg_dump -U app psg_app | gzip > backup_$(date +%Y%m%d_%H%M%S).sql.gz
+docker-compose -f docker-compose.prod.yml exec database mysqldump -u root psg_app | gzip > backup_$(date +%Y%m%d_%H%M%S).sql.gz
 ```
 
 ### Restauration
 ```bash
 # Restaurer depuis une sauvegarde
-docker-compose -f docker-compose.prod.yml exec -T database psql -U app psg_app < backup.sql
+docker-compose -f docker-compose.prod.yml exec -T database mysql -u root psg_app < backup.sql
 ```
 
 ### Sauvegarde des volumes

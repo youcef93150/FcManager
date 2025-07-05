@@ -1,6 +1,6 @@
 @echo off
 REM Script de déploiement Docker pour Windows
-REM Utilisation: docker-deploy.bat
+REM Utilisation: docker-decho    • Base de données: localhost:3306ploy.bat
 
 echo ==========================================
 echo 🐳 Déploiement Docker - Projet PSG

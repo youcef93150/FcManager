@@ -79,9 +79,9 @@ start_containers() {
 wait_for_database() {
     log "Attente de la base de données..."
     
-    # Attendre que PostgreSQL soit prêt
+    # Attendre que MySQL soit prêt
     timeout=60
-    while ! docker-compose -f docker-compose.prod.yml exec -T database pg_isready -U app -d psg_app &>/dev/null; do
+    while ! docker-compose -f docker-compose.prod.yml exec -T database mysqladmin ping -h localhost --silent &>/dev/null; do
         timeout=$((timeout - 1))
         if [ $timeout -eq 0 ]; then
             error "Timeout: La base de données n'est pas prête"
@@ -141,7 +141,7 @@ show_info() {
     info "  • Frontend (Vue.js): http://localhost:3000"
     info "  • Backend (Symfony): http://localhost:8000"
     info "  • API: http://localhost:8000/api"
-    info "  • Base de données: localhost:5432"
+    info "  • Base de données: localhost:3306"
     echo ""
     info "🔧 Commandes utiles:"
     info "  • Voir les logs: docker-compose -f docker-compose.prod.yml logs -f"

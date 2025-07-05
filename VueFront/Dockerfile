@@ -11,8 +11,8 @@ WORKDIR /app
 # Copier package.json et package-lock.json
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm ci --only=production
+# Installer les dépendances avec npm install pour corriger le problème Rollup
+RUN npm install
 
 # Copier le code source
 COPY . .

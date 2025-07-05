@@ -1,0 +1,18 @@
+DirectoryIndex index.php
+
+<IfModule mod_negotiation.c>
+    Options -MultiViews
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Passer l'en-tête Authorization à PHP
+    RewriteCond %{HTTP:Authorization} (.+)
+    RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+    
+    # Rediriger toutes les requêtes vers index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [L]
+</IfModule>

@@ -28,7 +28,32 @@ class ApiController extends AbstractController
      */
     public function checkAuth(Request $request): JsonResponse
     {
+        // Essayer de récupérer le token depuis l'en-tête Authorization
         $token = $request->headers->get('Authorization');
+        
+        // Si pas trouvé, essayer depuis $_SERVER (pour Apache)
+        if (!$token && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $token = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        
+        // Dernière tentative avec REDIRECT_HTTP_AUTHORIZATION
+        if (!$token && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        
+        // Nouvelle tentative avec la variable d'environnement créée par .htaccess
+        if (!$token && function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            if (isset($headers['Authorization'])) {
+                $token = $headers['Authorization'];
+            }
+        }
+        
+        // Essayer aussi avec la variable $_ENV
+        if (!$token && isset($_ENV['HTTP_AUTHORIZATION'])) {
+            $token = $_ENV['HTTP_AUTHORIZATION'];
+        }
+        
         if (!$token) {
             return new JsonResponse(['error' => 'Token manquant'], JsonResponse::HTTP_UNAUTHORIZED);
         }

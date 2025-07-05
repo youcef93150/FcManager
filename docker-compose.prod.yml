@@ -1,22 +1,19 @@
-version: '3.8'
-
 services:
-  # Base de données PostgreSQL
+  # Base de données MySQL
   database:
-    image: postgres:16-alpine
+    image: mysql:8.0
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-psg_app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-MotDePasseSecret123!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-vue_psg}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-psg_app}", "-U", "${POSTGRES_USER:-app}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 5s
       retries: 5
       start_period: 60s
     volumes:
-      - database_data:/var/lib/postgresql/data
+      - database_data:/var/lib/mysql
     ports:
-      - "5432:5432"
+      - "3306:3306"
     restart: unless-stopped
 
   # Backend Symfony
@@ -32,7 +29,7 @@ services:
     environment:
       - APP_ENV=${APP_ENV:-prod}
       - APP_SECRET=${APP_SECRET:-ChangezCetteClëSecrete123456789}
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-MotDePasseSecret123!}@database:5432/${POSTGRES_DB:-psg_app}?serverVersion=16&charset=utf8
+      - DATABASE_URL=mysql://root:@database:3306/${MYSQL_DATABASE:-vue_psg}?serverVersion=8.0&charset=utf8mb4
       - CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN:-http://localhost:3000}
     volumes:
       - ./Symfony_Projet:/var/www/html
