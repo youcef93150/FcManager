@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/api")
+ */
 class LoginController extends AbstractController
 {
     private $entityManager;
@@ -19,14 +22,37 @@ class LoginController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    private function setCorsHeaders(JsonResponse $response): void
+    {
+        // Obtenir l'origine de la requête
+        $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+        
+        // Liste des origines autorisées
+        $allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://fcmanager-production.up.railway.app'
+        ];
+        
+        // Vérifier si l'origine est dans la liste ou si c'est un domaine Vercel
+        if (in_array($origin, $allowedOrigins) || preg_match('/^https:\/\/.*\.vercel\.app$/', $origin)) {
+            $response->headers->set('Access-Control-Allow-Origin', $origin);
+        }
+        
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    }
+
+    /**
+     * @Route("/login", name="api_login", methods={"POST", "OPTIONS"})
+     */
     public function login(Request $request, UserRepository $userRepository): JsonResponse
     {
         // Gérer les requêtes OPTIONS pour CORS
         if ($request->getMethod() === 'OPTIONS') {
             $response = new JsonResponse();
-            $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:3000');
-            $response->headers->set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            $this->setCorsHeaders($response);
             return $response;
         }
 
@@ -61,20 +87,20 @@ class LoginController extends AbstractController
         ]);
 
         // Headers CORS
-        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:3000');
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        $this->setCorsHeaders($response);
 
         return $response;
     }
 
+    /**
+     * @Route("/register", name="api_register", methods={"POST", "OPTIONS"})
+     */
     public function register(Request $request, UserRepository $userRepository): JsonResponse
     {
         // Gérer les requêtes OPTIONS pour CORS
         if ($request->getMethod() === 'OPTIONS') {
             $response = new JsonResponse();
-            $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:3000');
-            $response->headers->set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            $this->setCorsHeaders($response);
             return $response;
         }
 
@@ -85,16 +111,19 @@ class LoginController extends AbstractController
         $password = $data['password'] ?? null;
         $nom = $data['nom'] ?? null;
         $prenom = $data['prenom'] ?? null;
-        $role = $data['role'] ?? 'utilisateurs';
 
         if (!$email || !$password || !$nom || !$prenom) {
-            return new JsonResponse(['error' => 'Tous les champs sont requis'], JsonResponse::HTTP_BAD_REQUEST);
+            $response = new JsonResponse(['error' => 'Tous les champs sont requis'], JsonResponse::HTTP_BAD_REQUEST);
+            $this->setCorsHeaders($response);
+            return $response;
         }
 
-        // Vérifier si l'email existe déjà
+        // Vérifier si l'utilisateur existe déjà
         $existingUser = $userRepository->findOneBy(['email' => $email]);
         if ($existingUser) {
-            return new JsonResponse(['error' => 'Un utilisateur avec cet email existe déjà'], JsonResponse::HTTP_CONFLICT);
+            $response = new JsonResponse(['error' => 'Un compte avec cet email existe déjà'], JsonResponse::HTTP_CONFLICT);
+            $this->setCorsHeaders($response);
+            return $response;
         }
 
         // Créer le nouvel utilisateur
@@ -103,13 +132,12 @@ class LoginController extends AbstractController
         $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $user->setNom($nom);
         $user->setPrenom($prenom);
-        $user->setRole($role);
-
-        // Générer un token API
+        $user->setRole('user'); // Par défaut
+        
+        // Générer un token
         $token = bin2hex(random_bytes(32));
         $user->setApiToken($token);
 
-        // Sauvegarder en base
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
@@ -124,11 +152,10 @@ class LoginController extends AbstractController
                 'prenom' => $user->getPrenom(),
                 'role' => $user->getRole()
             ]
-        ]);
+        ], JsonResponse::HTTP_CREATED);
 
         // Headers CORS
-        $response->headers->set('Access-Control-Allow-Origin', 'http://localhost:3000');
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        $this->setCorsHeaders($response);
 
         return $response;
     }
