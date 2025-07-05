@@ -47,8 +47,39 @@ RUN mkdir -p var/cache var/log \
     && chown -R www-data:www-data var/ \
     && chmod -R 775 var/
 
+# Générer l'autoloader optimisé et nettoyer le cache
+RUN composer dump-autoload --optimize \
+    && php bin/console cache:clear --env=prod \
+    && php bin/console cache:warmup --env=prod
+
+# Script de démarrage pour exécuter les migrations
+COPY <<EOF /usr/local/bin/start.sh
+#!/bin/bash
+set -e
+
+echo "🚀 Démarrage de l'application Symfony..."
+
+# Attendre que la base de données soit prête
+echo "⏳ Attente de la base de données..."
+until php bin/console doctrine:database:create --if-not-exists --env=prod 2>/dev/null || echo "Base de données déjà existante"; do
+  echo "🔄 En attente de la connexion à la base..."
+  sleep 2
+done
+
+# Exécuter les migrations
+echo "📊 Exécution des migrations..."
+php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+
+echo "✅ Application prête !"
+
+# Démarrer Apache
+exec apache2-foreground
+EOF
+
+RUN chmod +x /usr/local/bin/start.sh
+
 # Exposer le port 80
 EXPOSE 80
 
-# Démarrer Apache
-CMD ["apache2-foreground"]
+# Utiliser notre script de démarrage
+CMD ["/usr/local/bin/start.sh"]
