@@ -251,19 +251,28 @@ Votre application PSG est maintenant déployée et accessible mondialement ! �
 2. **LoginController Restauré** : Fichier complet avec gestion inscription et connexion
 3. **Scripts de Test** : Outils PowerShell pour vérifier l'API
 4. **Guides Complets** : Documentation détaillée du processus
+5. **🆕 Railway CLI Configuré** : Connexion établie au projet FcManager
+6. **🆕 Outils d'Import BDD** : Scripts PowerShell pour importer la base MySQL
+7. **🆕 SQL Prêt** : Fichier `psg_railway_import.sql` copié dans le presse-papiers
 
 ### 🎯 Actions Immédiates Requises
 
-1. **Vérifier Railway** (5 min)
-   - Status : `https://fcmanager-production.up.railway.app/api`
-   - Si erreur 502 : attendre la fin du build
+1. **✅ Railway CLI Connecté** 
+   - Status : Project FcManager lié avec succès
+   - Service MySQL configuré
 
-2. **Déployer sur Vercel** (10 min)
+2. **🔄 Importer la Base de Données** (2 min)
+   - Le SQL est déjà copié dans votre presse-papiers
+   - Aller sur https://railway.app → FcManager → MySQL → Data → Query
+   - Coller et exécuter le SQL
+
+3. **🔄 Vérifier l'API** (1 min)
+   - Tester : `https://fcmanager-production.up.railway.app/api`
+   - Si erreur 502 : attendre la fin du build ou importer la BDD
+
+4. **🚀 Déployer sur Vercel** (10 min)
    - Root Directory: `VueFront`
    - Variable: `VITE_API_URL=https://fcmanager-production.up.railway.app`
-
-3. **Importer BDD** (si nécessaire)
-   - Utiliser `psg_railway_import.sql` dans Railway MySQL Query
 
 ### 📁 Fichiers Clés Ajoutés
 - `GUIDE_FINAL_DEPLOIEMENT.md` : Guide pas-à-pas complet
