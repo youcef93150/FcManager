@@ -1,0 +1,125 @@
+# 🗄️ COMMANDES CLI MYSQL RAILWAY - TABLE PAR TABLE
+# Connexion: railway connect MySQL
+# Date: Juillet 2025
+
+# =========================================
+# 1️⃣ CONNEXION À MYSQL RAILWAY
+# =========================================
+railway connect MySQL
+
+
+# =========================================
+# 2️⃣ VÉRIFICATION DES TABLES EXISTANTES
+# =========================================
+SHOW TABLES;
+
+
+# =========================================
+# 3️⃣ TABLE: actualites (5 articles)
+# =========================================
+
+# Vérifier la structure
+DESCRIBE actualites;
+
+# Insérer les données
+INSERT INTO `actualites` (`id`, `titre`, `contenu`, `date_publication`, `auteur`, `image_url`, `statut`, `likes`, `commentaires`, `created_at`, `updated_at`) VALUES
+(1, 'Victoire eclatante 3-0 contre Lille', 'Le PSG s\'impose avec brio au Parc des Princes grace a un triple de Mbappe. Une performance exceptionnelle qui confirme les ambitions parisiennes pour cette saison.', '2025-06-17 18:32:17', 'PSG Media', '/images/psg-lille-3-0.jpg', 'publie', 1250, 89, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(2, 'Nouveau partenariat strategique annonce', 'Le club parisien renforce ses alliances commerciales pour les prochaines saisons avec un accord majeur qui va revolutionner l\'experience des supporters.', '2025-06-17 18:32:17', 'Direction Commerciale', '/images/nouveau-partenariat.jpg', 'publie', 856, 45, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(3, 'Stage d\'ete au Qatar confirme', 'Les joueurs se prepareront dans des conditions optimales pour la nouvelle saison dans les installations ultramodernes de Doha.', '2025-06-17 18:32:17', 'Staff Technique', '/images/stage-qatar.jpg', 'publie', 967, 52, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(4, 'Nouveau centre d\'entrainement inaugure', 'Le PSG inaugure ses nouvelles installations d\'entrainement a Poissy, un complexe de derniere generation pour preparer l\'avenir du club.', '2025-06-17 18:32:17', 'PSG Infrastructure', '/images/centre-entrainement.jpg', 'publie', 743, 34, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(5, 'Mbappe prolonge son contrat', 'La star francaise s\'engage pour trois annees supplementaires avec le Paris Saint-Germain, confirmant son attachement au projet parisien.', '2025-06-17 18:32:17', 'PSG Official', '/images/mbappe-prolongation.jpg', 'publie', 2150, 156, '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# Vérifier l'insertion
+SELECT COUNT(*) as total_actualites FROM actualites;
+SELECT id, titre FROM actualites;
+
+
+# =========================================
+# 4️⃣ TABLE: joueurs (5 joueurs)
+# =========================================
+
+# Vérifier la structure
+DESCRIBE joueurs;
+
+# Insérer les données
+INSERT INTO `joueurs` (`id`, `nom`, `prenom`, `poste`, `numero_maillot`, `date_naissance`, `nationalite`, `taille`, `poids`, `statut`, `photo_url`, `created_at`, `updated_at`) VALUES
+(1, 'Mbappe', 'Kylian', 'Attaquant', 7, '1998-12-20', 'France', 178, 73, 'actif', '/images/mbappe.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(2, 'Neymar', 'Jr', 'Attaquant', 10, '1992-02-05', 'Bresil', 175, 68, 'actif', '/images/neymar.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(3, 'Messi', 'Lionel', 'Attaquant', 30, '1987-06-24', 'Argentine', 170, 67, 'actif', '/images/messi.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(4, 'Verratti', 'Marco', 'Milieu', 6, '1992-11-05', 'Italie', 165, 60, 'actif', '/images/verratti.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(5, 'Marquinhos', 'Marcos', 'Defenseur', 5, '1994-05-14', 'Bresil', 183, 75, 'actif', '/images/marquinhos.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# Vérifier l'insertion
+SELECT COUNT(*) as total_joueurs FROM joueurs;
+SELECT id, nom, prenom, poste, numero_maillot FROM joueurs;
+
+
+# =========================================
+# 5️⃣ TABLE: product (5 produits)
+# =========================================
+
+# Vérifier la structure
+DESCRIBE product;
+
+# Insérer les données
+INSERT INTO `product` (`id`, `name`, `description`, `price`, `category`, `stock_quantity`, `image_url`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Maillot Domicile PSG 2025', 'Maillot officiel du Paris Saint-Germain pour la saison 2025', 89.99, 'Maillots', 150, '/images/maillot-domicile.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(2, 'Echarpe PSG Classique', 'Echarpe officielle aux couleurs du PSG', 19.99, 'Accessoires', 200, '/images/echarpe-psg.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(3, 'Casquette PSG Logo', 'Casquette ajustable avec logo PSG brode', 24.99, 'Accessoires', 100, '/images/casquette-psg.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(4, 'Maillot Exterieur PSG 2025', 'Maillot exterieur officiel PSG', 89.99, 'Maillots', 120, '/images/maillot-exterieur.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(5, 'Short Officiel PSG', 'Short de sport aux couleurs du PSG', 39.99, 'Maillots', 80, '/images/short-psg.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# Vérifier l'insertion
+SELECT COUNT(*) as total_products FROM product;
+SELECT id, name, price, category FROM product;
+
+
+# =========================================
+# 6️⃣ TABLE: user (2 utilisateurs)
+# =========================================
+
+# Vérifier la structure
+DESCRIBE user;
+
+# Insérer les données
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `nom`, `prenom`, `created_at`, `updated_at`) VALUES
+(1, 'admin@psg.fr', '[\"ROLE_ADMIN\"]', '$2y$13$hash_example_admin', 'Admin', 'PSG', '2025-06-17 18:32:17', '2025-06-17 18:32:17'),
+(2, 'user@psg.fr', '[\"ROLE_USER\"]', '$2y$13$hash_example_user', 'Fan', 'PSG', '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# Vérifier l'insertion
+SELECT COUNT(*) as total_users FROM user;
+SELECT id, email, roles, nom, prenom FROM user;
+
+
+# =========================================
+# 7️⃣ VÉRIFICATION FINALE
+# =========================================
+
+# Vérifier toutes les tables avec leurs données
+SELECT 'actualites' as table_name, COUNT(*) as count FROM actualites
+UNION ALL
+SELECT 'joueurs' as table_name, COUNT(*) as count FROM joueurs
+UNION ALL
+SELECT 'product' as table_name, COUNT(*) as count FROM product
+UNION ALL
+SELECT 'user' as table_name, COUNT(*) as count FROM user;
+
+# Sortir de MySQL
+EXIT;
+
+
+# =========================================
+# 8️⃣ COMMANDES SIMPLIFIÉES (copier-coller rapide)
+# =========================================
+
+# ACTUALITES (5 lignes):
+INSERT INTO `actualites` (`id`, `titre`, `contenu`, `date_publication`, `auteur`, `image_url`, `statut`, `likes`, `commentaires`, `created_at`, `updated_at`) VALUES (1, 'Victoire eclatante 3-0 contre Lille', 'Le PSG s\'impose avec brio au Parc des Princes grace a un triple de Mbappe. Une performance exceptionnelle qui confirme les ambitions parisiennes pour cette saison.', '2025-06-17 18:32:17', 'PSG Media', '/images/psg-lille-3-0.jpg', 'publie', 1250, 89, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (2, 'Nouveau partenariat strategique annonce', 'Le club parisien renforce ses alliances commerciales pour les prochaines saisons avec un accord majeur qui va revolutionner l\'experience des supporters.', '2025-06-17 18:32:17', 'Direction Commerciale', '/images/nouveau-partenariat.jpg', 'publie', 856, 45, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (3, 'Stage d\'ete au Qatar confirme', 'Les joueurs se prepareront dans des conditions optimales pour la nouvelle saison dans les installations ultramodernes de Doha.', '2025-06-17 18:32:17', 'Staff Technique', '/images/stage-qatar.jpg', 'publie', 967, 52, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (4, 'Nouveau centre d\'entrainement inaugure', 'Le PSG inaugure ses nouvelles installations d\'entrainement a Poissy, un complexe de derniere generation pour preparer l\'avenir du club.', '2025-06-17 18:32:17', 'PSG Infrastructure', '/images/centre-entrainement.jpg', 'publie', 743, 34, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (5, 'Mbappe prolonge son contrat', 'La star francaise s\'engage pour trois annees supplementaires avec le Paris Saint-Germain, confirmant son attachement au projet parisien.', '2025-06-17 18:32:17', 'PSG Official', '/images/mbappe-prolongation.jpg', 'publie', 2150, 156, '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# JOUEURS (5 lignes):
+INSERT INTO `joueurs` (`id`, `nom`, `prenom`, `poste`, `numero_maillot`, `date_naissance`, `nationalite`, `taille`, `poids`, `statut`, `photo_url`, `created_at`, `updated_at`) VALUES (1, 'Mbappe', 'Kylian', 'Attaquant', 7, '1998-12-20', 'France', 178, 73, 'actif', '/images/mbappe.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (2, 'Neymar', 'Jr', 'Attaquant', 10, '1992-02-05', 'Bresil', 175, 68, 'actif', '/images/neymar.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (3, 'Messi', 'Lionel', 'Attaquant', 30, '1987-06-24', 'Argentine', 170, 67, 'actif', '/images/messi.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (4, 'Verratti', 'Marco', 'Milieu', 6, '1992-11-05', 'Italie', 165, 60, 'actif', '/images/verratti.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (5, 'Marquinhos', 'Marcos', 'Defenseur', 5, '1994-05-14', 'Bresil', 183, 75, 'actif', '/images/marquinhos.jpg', '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# PRODUCTS (5 lignes):
+INSERT INTO `product` (`id`, `name`, `description`, `price`, `category`, `stock_quantity`, `image_url`, `is_active`, `created_at`, `updated_at`) VALUES (1, 'Maillot Domicile PSG 2025', 'Maillot officiel du Paris Saint-Germain pour la saison 2025', 89.99, 'Maillots', 150, '/images/maillot-domicile.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (2, 'Echarpe PSG Classique', 'Echarpe officielle aux couleurs du PSG', 19.99, 'Accessoires', 200, '/images/echarpe-psg.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (3, 'Casquette PSG Logo', 'Casquette ajustable avec logo PSG brode', 24.99, 'Accessoires', 100, '/images/casquette-psg.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (4, 'Maillot Exterieur PSG 2025', 'Maillot exterieur officiel PSG', 89.99, 'Maillots', 120, '/images/maillot-exterieur.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (5, 'Short Officiel PSG', 'Short de sport aux couleurs du PSG', 39.99, 'Maillots', 80, '/images/short-psg.jpg', 1, '2025-06-17 18:32:17', '2025-06-17 18:32:17');
+
+# USERS (2 lignes):
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `nom`, `prenom`, `created_at`, `updated_at`) VALUES (1, 'admin@psg.fr', '[\"ROLE_ADMIN\"]', '$2y$13$hash_example_admin', 'Admin', 'PSG', '2025-06-17 18:32:17', '2025-06-17 18:32:17'), (2, 'user@psg.fr', '[\"ROLE_USER\"]', '$2y$13$hash_example_user', 'Fan', 'PSG', '2025-06-17 18:32:17', '2025-06-17 18:32:17');

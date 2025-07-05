@@ -1,0 +1,38 @@
+# Commandes CLI directes pour vérifier Railway MySQL
+
+# 1. Se connecter à MySQL
+railway connect MySQL
+
+# 2. Une fois connecté à MySQL, exécuter ces commandes :
+
+# Voir toutes les bases de données
+SHOW DATABASES;
+
+# Utiliser la base 'railway'
+USE railway;
+
+# Voir toutes les tables
+SHOW TABLES;
+
+# Vérifier la structure de la table users
+DESCRIBE users;
+
+# Compter les enregistrements dans chaque table
+SELECT COUNT(*) as total_users FROM users;
+SELECT COUNT(*) as total_actualites FROM actualites;
+SELECT COUNT(*) as total_joueurs FROM joueurs;
+SELECT COUNT(*) as total_produits FROM produits;
+
+# Voir quelques enregistrements de test
+SELECT id, email, nom, prenom, role FROM users LIMIT 5;
+SELECT id, titre, date_publication FROM actualites LIMIT 5;
+
+# Vérifier si les tables sont vides ou peuplées
+SELECT 
+    table_name,
+    table_rows
+FROM information_schema.tables 
+WHERE table_schema = 'railway';
+
+# Quitter MySQL
+EXIT;
