@@ -237,3 +237,37 @@ Votre application PSG est maintenant déployée et accessible mondialement ! �
 - 🌐 **Application** : https://votre-app.vercel.app  
 - 🔧 **API Backend** : https://votre-backend.up.railway.app/api
 - 📊 **Documentation API** : https://votre-backend.up.railway.app/api (API Platform)
+
+---
+
+## 🎯 MISE À JOUR - DÉPLOIEMENT EN COURS
+
+**Date** : Janvier 2025
+**Statut** : ✅ Backend configuré, 🔄 En attente déploiement Vercel
+
+### ✅ Réalisations Récentes
+
+1. **CORS Corrigé** : Configuration dynamique pour accepter tous les domaines Vercel
+2. **LoginController Restauré** : Fichier complet avec gestion inscription et connexion
+3. **Scripts de Test** : Outils PowerShell pour vérifier l'API
+4. **Guides Complets** : Documentation détaillée du processus
+
+### 🎯 Actions Immédiates Requises
+
+1. **Vérifier Railway** (5 min)
+   - Status : `https://fcmanager-production.up.railway.app/api`
+   - Si erreur 502 : attendre la fin du build
+
+2. **Déployer sur Vercel** (10 min)
+   - Root Directory: `VueFront`
+   - Variable: `VITE_API_URL=https://fcmanager-production.up.railway.app`
+
+3. **Importer BDD** (si nécessaire)
+   - Utiliser `psg_railway_import.sql` dans Railway MySQL Query
+
+### 📁 Fichiers Clés Ajoutés
+- `GUIDE_FINAL_DEPLOIEMENT.md` : Guide pas-à-pas complet
+- `test-simple.ps1` : Script de test de l'API
+- `LoginController.php` : CORS configuré pour Vercel
+
+**🚀 Prêt pour la phase finale de déploiement !**
