@@ -1,4 +1,4 @@
-# Dockerfile simplifié pour Railway
+# Dockerfile propre pour Railway
 FROM php:8.2-apache
 
 # Installation des extensions PHP
@@ -19,10 +19,10 @@ RUN apt-get update && apt-get install -y \
 # Installation de Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configuration Apache simple
+# Configuration Apache
 RUN a2enmod rewrite headers
 
-# Configuration Apache basique
+# Configuration Apache via fichier
 RUN echo '<VirtualHost *:80>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
@@ -43,27 +43,32 @@ RUN echo '<VirtualHost *:80>\n\
 # Répertoire de travail
 WORKDIR /var/www/html
 
-# Copier composer files
-COPY composer*.json ./
+# Copier uniquement les fichiers composer
+COPY composer.json composer.lock ./
 
-# Installer dépendances PHP
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Supprimer vendor existant et installer proprement
+RUN rm -rf vendor/ \
+    && composer clear-cache \
+    && composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-# Copier le code
-COPY . .
+# Copier le reste du code (sans vendor/)
+COPY --chown=www-data:www-data . .
 
-# Permissions
-RUN mkdir -p var/cache var/log \
-    && chown -R www-data:www-data var/ \
-    && chmod -R 775 var/ \
-    && chown -R www-data:www-data public/
+# S'assurer que vendor n'est pas écrasé
+RUN rm -rf vendor/ \
+    && composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-# Nettoyer le cache Symfony
-RUN php bin/console cache:clear --env=prod --no-debug || true \
-    && composer dump-autoload --optimize
+# Créer dossiers et permissions
+RUN mkdir -p var/cache var/log public/uploads \
+    && chown -R www-data:www-data var/ public/ \
+    && chmod -R 775 var/ public/
+
+# Nettoyer et optimiser
+RUN composer dump-autoload --optimize --no-dev \
+    && (php bin/console cache:clear --env=prod --no-debug 2>/dev/null || true)
 
 # Exposer le port
 EXPOSE 80
 
-# Démarrer Apache directement
+# Démarrer Apache
 CMD ["apache2-foreground"]
