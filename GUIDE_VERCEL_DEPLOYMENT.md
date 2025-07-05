@@ -15,7 +15,8 @@ Ce guide vous explique comment déployer votre application PSG sur **Vercel** po
 
 1. ✅ Compte GitHub avec votre code
 2. ✅ Compte Vercel (gratuit) : https://vercel.com
-3. ✅ Compte Railway (gratuit) : https://railway.app
+3. ✅ Compte Railway (gratuit) : https:
+//railway.app
 
 ---
 
@@ -272,12 +273,14 @@ Votre application PSG est maintenant déployée et accessible mondialement ! �
    - URL : `https://fcmanager-production.up.railway.app/api`
    - Action : Procéder au déploiement Vercel qui peut aider
 
-4. **🚀 DÉPLOYER MAINTENANT SUR VERCEL** (10 min) ⏰
-   - ✅ Code pushé sur master (repository à jour)
+4. **🚀 REDÉPLOYER SUR VERCEL AVEC CORRECTIONS** (5 min) ⏰
+   - ✅ Code pushé sur master (corrections appliquées)
+   - ✅ Problème de permissions résolu
+   - 🔧 **Build Command à utiliser** : `chmod +x ./node_modules/.bin/vite && npm run build`
    - Root Directory: `VueFront`
    - Variable: `VITE_API_URL=https://fcmanager-production.up.railway.app`
    - Framework: Vue.js
-   - 🎯 **ALLER SUR https://vercel.com MAINTENANT**
+   - 🎯 **MODIFIER LES SETTINGS VERCEL ET REDÉPLOYER**
 
 ### 📁 Fichiers Clés Ajoutés
 - `GUIDE_FINAL_DEPLOIEMENT.md` : Guide pas-à-pas complet
@@ -290,7 +293,7 @@ Votre application PSG est maintenant déployée et accessible mondialement ! �
 - `commandes-mysql-table-par-table.txt` : 🆕 Commandes SQL table par table
 - `GUIDE_DEPLOIEMENT_VERCEL_RAPIDE.md` : 🆕 Guide de déploiement Vercel
 - `test-api-complete.ps1` : 🆕 Diagnostic complet API Railway
-- `PRET_POUR_VERCEL.md` : 🆕 Résumé final et instructions de déploiement
+- `RESOLUTION_ERREUR_VERCEL.md` : 🆕 Guide de résolution erreur permissions Vercel
 
 ### 🎯 STATUT FINAL
 ✅ **Tous les fichiers vérifiés et présents**
