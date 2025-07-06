@@ -15,9 +15,16 @@ echo "✅ MySQL disponible !"
 echo "🧹 Nettoyage du cache Symfony..."
 php bin/console cache:clear --env=prod --no-debug || true
 
-# Exécuter les migrations
-echo "🔄 Exécution des migrations de base de données..."
-php bin/console doctrine:migrations:migrate --no-interaction --env=prod || echo "⚠️  Migrations échouées, mais on continue..."
+# Gestion intelligente des migrations
+echo "🔄 Vérification et synchronisation des migrations..."
+# Marquer toutes les migrations comme exécutées si la base existe déjà
+if php bin/console doctrine:query:sql "SELECT COUNT(*) FROM user" --env=prod >/dev/null 2>&1; then
+    echo "📋 Base de données existante détectée, marquage des migrations comme exécutées..."
+    php bin/console doctrine:migrations:version --add --all --no-interaction --env=prod || echo "⚠️  Marquage migrations échoué"
+else
+    echo "🆕 Nouvelle base de données, exécution des migrations..."
+    php bin/console doctrine:migrations:migrate --no-interaction --env=prod || echo "⚠️  Migrations échouées"
+fi
 
 # Vérifier que la base est accessible
 echo "🔍 Test de connexion à la base de données..."
