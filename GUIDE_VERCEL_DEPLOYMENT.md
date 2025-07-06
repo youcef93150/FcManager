@@ -306,7 +306,10 @@ Votre application PSG est maintenant déployée et accessible mondialement ! �
 ✅ **Base de données MySQL** : **Importée et fonctionnelle**  
 ✅ **Migrations Doctrine** : **Corrigées**  
 ✅ **Apache** : **Démarré correctement**  
-⚠️ **Backend Railway** : **Erreur 502 (dernière étape)**
+⚠️ **Backend Railway** : **CORRECTION MAJEURE APPLIQUÉE - Redéploiement en cours**
+
+**🔥 DÉCOUVERTE CRITIQUE :** Railway utilisait NIXPACKS au lieu du Dockerfile !
+**🔧 CORRECTION :** Forcé builder DOCKERFILE + routes de test ajoutées
 
 **🎉 DÉPLOIEMENT À 85% RÉUSSI !**
 

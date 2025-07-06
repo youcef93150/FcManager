@@ -47,16 +47,16 @@ RUN echo 'ServerName fcmanager-production.up.railway.app' >> /etc/apache2/apache
 # Répertoire de travail
 WORKDIR /var/www/html
 
-# Copier uniquement les fichiers composer
-COPY composer.json composer.lock ./
+# Copier uniquement les fichiers composer depuis Symfony_Projet
+COPY Symfony_Projet/composer.json Symfony_Projet/composer.lock ./
 
 # Supprimer vendor existant et installer proprement
 RUN rm -rf vendor/ \
     && composer clear-cache \
     && composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
-# Copier le reste du code (sans vendor/)
-COPY --chown=www-data:www-data . .
+# Copier le reste du code Symfony (sans vendor/)
+COPY --chown=www-data:www-data Symfony_Projet/ .
 
 # S'assurer que vendor n'est pas écrasé
 RUN rm -rf vendor/ \
@@ -72,7 +72,7 @@ RUN composer dump-autoload --optimize --no-dev \
     && (php bin/console cache:clear --env=prod --no-debug 2>/dev/null || true)
 
 # Copier et rendre exécutable le script de démarrage
-COPY startup.sh /startup.sh
+COPY Symfony_Projet/startup.sh /startup.sh
 RUN chmod +x /startup.sh
 
 # Exposer le port (Railway utilise une variable PORT dynamique)
