@@ -7,6 +7,14 @@ echo "🚀 Démarrage simplifié Symfony Railway..."
 export APP_ENV=prod
 export APP_DEBUG=0
 
+# Configuration du port Railway
+PORT=${PORT:-80}
+echo "🔌 Port configuré: $PORT"
+
+# Configurer Apache pour le bon port
+sed -i "s/\${PORT}/$PORT/g" /etc/apache2/sites-available/000-default.conf
+echo "Listen $PORT" > /etc/apache2/ports.conf
+
 # Attendre MySQL
 echo "📡 Vérification MySQL..."
 until mysqladmin ping -h"mysql.railway.internal" -P3306 -u"root" -p"JzDmhoZHVbHovzBCcIjoVjUozbIVnlzC" --silent; do
@@ -37,4 +45,21 @@ chown -R www-data:www-data var/ public/ 2>/dev/null || true
 chmod -R 775 var/ public/ 2>/dev/null || true
 
 echo "🎯 Démarrage Apache..."
+echo "🔍 Configuration Apache:"
+echo "Port: $PORT"
+echo "DocumentRoot: /var/www/html/public"
+
+# Vérifier que les fichiers existent
+if [ ! -f "/var/www/html/public/index.php" ]; then
+    echo "❌ ERREUR: index.php non trouvé!"
+    ls -la /var/www/html/public/
+    exit 1
+fi
+
+# Test de syntaxe PHP
+echo "🧪 Test syntaxe PHP..."
+php -l /var/www/html/public/index.php || exit 1
+
+# Démarrer Apache
+echo "🚀 Lancement Apache sur port $PORT..."
 exec apache2-foreground

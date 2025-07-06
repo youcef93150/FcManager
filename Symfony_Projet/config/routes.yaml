@@ -5,6 +5,17 @@ api_health:
     controller: App\Controller\HealthController::health
     methods: [GET]
 
+# Routes de test simple
+test_ping:
+    path: /api/ping
+    controller: App\Controller\TestController::ping
+    methods: [GET]
+
+test_index:
+    path: /
+    controller: App\Controller\TestController::index
+    methods: [GET]
+
 # Routes d'authentification
 api_login:
     path: /api/login

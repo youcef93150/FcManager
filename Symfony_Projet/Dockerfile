@@ -22,8 +22,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Configuration Apache
 RUN a2enmod rewrite headers
 
-# Configuration Apache via fichier
-RUN echo '<VirtualHost *:80>\n\
+# Configuration Apache via fichier avec PORT dynamique
+RUN echo '<VirtualHost *:${PORT}>\n\
     ServerName fcmanager-production.up.railway.app\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
@@ -75,8 +75,8 @@ RUN composer dump-autoload --optimize --no-dev \
 COPY startup.sh /startup.sh
 RUN chmod +x /startup.sh
 
-# Exposer le port
-EXPOSE 80
+# Exposer le port (Railway utilise une variable PORT dynamique)
+EXPOSE ${PORT:-80}
 
 # Démarrer avec notre script simplifié
 CMD ["/startup.sh"]
