@@ -24,6 +24,7 @@ RUN a2enmod rewrite headers
 
 # Configuration Apache via fichier
 RUN echo '<VirtualHost *:80>\n\
+    ServerName fcmanager-production.up.railway.app\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
@@ -39,6 +40,9 @@ RUN echo '<VirtualHost *:80>\n\
     ErrorLog ${APACHE_LOG_DIR}/error.log\n\
     CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
 </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+
+# Ajouter ServerName global pour éviter les warnings
+RUN echo 'ServerName fcmanager-production.up.railway.app' >> /etc/apache2/apache2.conf
 
 # Répertoire de travail
 WORKDIR /var/www/html
@@ -67,8 +71,12 @@ RUN mkdir -p var/cache var/log public/uploads \
 RUN composer dump-autoload --optimize --no-dev \
     && (php bin/console cache:clear --env=prod --no-debug 2>/dev/null || true)
 
+# Copier et rendre exécutable le script de démarrage
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Exposer le port
 EXPOSE 80
 
-# Démarrer Apache
-CMD ["apache2-foreground"]
+# Démarrer avec notre script personnalisé
+CMD ["/start.sh"]

@@ -1,4 +1,10 @@
 
+# Route de santé pour vérifier l'API
+api_health:
+    path: /api/health
+    controller: App\Controller\HealthController::health
+    methods: [GET]
+
 # Routes d'authentification
 api_login:
     path: /api/login
