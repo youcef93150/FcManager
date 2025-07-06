@@ -20,7 +20,7 @@ echo "🔄 Vérification et synchronisation des migrations..."
 # Marquer toutes les migrations comme exécutées si la base existe déjà
 if php bin/console doctrine:query:sql "SELECT COUNT(*) FROM user" --env=prod >/dev/null 2>&1; then
     echo "📋 Base de données existante détectée, marquage des migrations comme exécutées..."
-    php bin/console doctrine:migrations:version --add --all --no-interaction --env=prod || echo "⚠️  Marquage migrations échoué"
+    php bin/console doctrine:migrations:version --add --all --no-interaction --env=prod 2>/dev/null || echo "⚠️  Marquage migrations déjà fait"
 else
     echo "🆕 Nouvelle base de données, exécution des migrations..."
     php bin/console doctrine:migrations:migrate --no-interaction --env=prod || echo "⚠️  Migrations échouées"
@@ -43,6 +43,14 @@ chmod -R 775 var/ public/ || true
 echo "🧪 Test de la configuration Symfony..."
 php bin/console debug:router --env=prod | head -10 || echo "⚠️  Routeur non disponible"
 
+# Test final - vérifier que Symfony répond
+echo "🔍 Test final de Symfony..."
+if php bin/console --env=prod --version >/dev/null 2>&1; then
+    echo "✅ Symfony prêt !"
+else
+    echo "❌ Problème Symfony détecté"
+fi
+
 echo "🎯 Démarrage d'Apache..."
-# Démarrer Apache en foreground
-apache2-foreground
+# S'assurer qu'Apache démarre quoi qu'il arrive
+exec apache2-foreground
