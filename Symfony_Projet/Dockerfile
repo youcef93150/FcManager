@@ -72,11 +72,11 @@ RUN composer dump-autoload --optimize --no-dev \
     && (php bin/console cache:clear --env=prod --no-debug 2>/dev/null || true)
 
 # Copier et rendre exécutable le script de démarrage
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+COPY startup.sh /startup.sh
+RUN chmod +x /startup.sh
 
 # Exposer le port
 EXPOSE 80
 
-# Démarrer avec notre script personnalisé
-CMD ["/start.sh"]
+# Démarrer avec notre script simplifié
+CMD ["/startup.sh"]
